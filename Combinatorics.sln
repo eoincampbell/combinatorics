@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Solution Items", "1. Solution Items", "{DE09F103-DDBC-49CB-88D1-AC506C55D446}"
+	ProjectSection(SolutionItems) = preProject
+		Nuget\Build.bat = Nuget\Build.bat
+		Nuget\Combinatorics.nuspec = Nuget\Combinatorics.nuspec
+		combinatorics.png = combinatorics.png
+		Combinatorics.snk = Combinatorics.snk
+		GlobalAssemblyInfo.cs = GlobalAssemblyInfo.cs
+		LICENCE = LICENCE
+		Nuget\PushToNuget.bat = Nuget\PushToNuget.bat
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Combinatorics.Net40", "Combinatorics.Net40\Combinatorics.Net40.csproj", "{4199FE5F-137A-44FF-8D77-91CEBB37322F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Combinatorics.LocalTests", "Combinatorics.LocalTests\Combinatorics.LocalTests.csproj", "{D4A201C4-BF68-4680-83CE-6F282303EF8C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Libraries", "2. Libraries", "{81A2BB90-E147-4037-8B9F-1B7E6A4E3E67}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Testing", "4. Testing", "{447C2ECC-4874-4556-A990-83F786D710C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Combinatorics.NugetTests", "Combinatorics.NugetTests\Combinatorics.NugetTests.csproj", "{B9891855-6826-4126-A8C6-5EAB78FE2CB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Combinatorics.Net20", "Combinatorics.Net20\Combinatorics.Net20.csproj", "{624B9F8A-4A95-4A3A-8E79-4E8D219AB4BE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4199FE5F-137A-44FF-8D77-91CEBB37322F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4199FE5F-137A-44FF-8D77-91CEBB37322F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4199FE5F-137A-44FF-8D77-91CEBB37322F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4199FE5F-137A-44FF-8D77-91CEBB37322F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4A201C4-BF68-4680-83CE-6F282303EF8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4A201C4-BF68-4680-83CE-6F282303EF8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4A201C4-BF68-4680-83CE-6F282303EF8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4A201C4-BF68-4680-83CE-6F282303EF8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9891855-6826-4126-A8C6-5EAB78FE2CB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9891855-6826-4126-A8C6-5EAB78FE2CB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9891855-6826-4126-A8C6-5EAB78FE2CB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9891855-6826-4126-A8C6-5EAB78FE2CB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{624B9F8A-4A95-4A3A-8E79-4E8D219AB4BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{624B9F8A-4A95-4A3A-8E79-4E8D219AB4BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{624B9F8A-4A95-4A3A-8E79-4E8D219AB4BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{624B9F8A-4A95-4A3A-8E79-4E8D219AB4BE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4199FE5F-137A-44FF-8D77-91CEBB37322F} = {81A2BB90-E147-4037-8B9F-1B7E6A4E3E67}
+		{624B9F8A-4A95-4A3A-8E79-4E8D219AB4BE} = {81A2BB90-E147-4037-8B9F-1B7E6A4E3E67}
+		{D4A201C4-BF68-4680-83CE-6F282303EF8C} = {447C2ECC-4874-4556-A990-83F786D710C6}
+		{B9891855-6826-4126-A8C6-5EAB78FE2CB9} = {447C2ECC-4874-4556-A990-83F786D710C6}
+	EndGlobalSection
+EndGlobal

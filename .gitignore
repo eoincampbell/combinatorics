@@ -7,7 +7,9 @@
 .metadata
 bin/
 tmp/
+lib/
 *.tmp
+*.nupkg
 *.bak
 *.swp
 *~.nib
