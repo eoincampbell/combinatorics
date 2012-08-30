@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DE09F103-DDBC-49CB-88D1-AC506C55D446}"
 	ProjectSection(SolutionItems) = preProject
-		Nuget\Build.bat = Nuget\Build.bat
+		Build.bat = Build.bat
 		Nuget\Combinatorics.nuspec = Nuget\Combinatorics.nuspec
 		combinatorics.png = combinatorics.png
 		Combinatorics.snk = Combinatorics.snk
 		GlobalAssemblyInfo.cs = GlobalAssemblyInfo.cs
 		LICENCE = LICENCE
-		Nuget\PushToNuget.bat = Nuget\PushToNuget.bat
+		PushToNuget.bat = PushToNuget.bat
 		README.md = README.md
 	EndProjectSection
 EndProject
