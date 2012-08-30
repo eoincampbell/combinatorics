@@ -2,18 +2,18 @@
 <package >
   <metadata>
     <id>Combinatorics</id>
-    <version>1.0.3</version>
-    <title>Combinatorics</title>
+    <version>1.0.3.1</version>
+    <title>Combinatorics Library for .NET</title>
     <authors>Adrian Akison, Eoin Campbell</authors>
     <owners>Eoin Campbell</owners>
     <licenseUrl>https://github.com/eoincampbell/combinatorics/blob/master/LICENCE</licenseUrl>
     <projectUrl>https://github.com/eoincampbell/combinatorics</projectUrl>
     <iconUrl>https://raw.github.com/eoincampbell/combinatorics/master/combinatorics.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>A Combinatorics Library providing IEnumerable classes capable of generating Combinations, Permutations &amp; Variations of a list of Inputs.</summary>
-    <description>A Combinatorics Library providing IEnumerable classes capable of generating Combinations, Permutations &amp; Variations of a list of Inputs. This nuget package wraps up Adrian Akison's original implementation. See: http://www.codeproject.com/Articles/26050/Permutations-Combinations-and-Variations-using-C-G. </description>
+    <summary>A Combinatorics Library for Combinations, Permutations &amp; Variations in .NET</summary>
+    <description>A Combinatorics Library providing Generic IEnumerable classes capable of generating Combinations, Permutations &amp; Variations of a list of Inputs. This nuget package wraps up Adrian Akison's original implementation. See: http://www.codeproject.com/Articles/26050/Permutations-Combinations-and-Variations-using-C-G. </description>
     <releaseNotes>Initial Release</releaseNotes>
-    <copyright>Copyright 2012</copyright>
-    <tags>Combinatorics Combination Permutation Variation</tags>
+    <copyright>Copyright © 2012</copyright>
+    <tags>Combinatorics Combination Permutation Variation .NET Library</tags>
   </metadata>
 </package>
