@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Combinatorics.NugetTests
 {
+
     /// <summary>
     /// Tests Cases &amp; Examples for Combinations, Permutations &amp; Variations with & without repetition in the output sets.
     /// </summary>
@@ -28,7 +29,7 @@ namespace Combinatorics.NugetTests
 
             var p = new Permutations<int>(integers, GenerateOption.WithoutRepetition);
 
-            foreach (List<int> v in p)
+            foreach (var v in p)
             {
                 System.Diagnostics.Debug.WriteLine(string.Join(",", v));
             }
@@ -55,7 +56,7 @@ namespace Combinatorics.NugetTests
 
             var p = new Permutations<int>(integers, GenerateOption.WithRepetition);
 
-            foreach (List<int> v in p)
+            foreach (var v in p)
             {
                 System.Diagnostics.Debug.WriteLine(string.Join(",", v));
             }
@@ -78,6 +79,11 @@ namespace Combinatorics.NugetTests
 
             var c = new Combinations<int>(integers, 3, GenerateOption.WithoutRepetition);
 
+            foreach (var v in c)
+            {
+                System.Diagnostics.Debug.WriteLine(string.Join(",", v));
+            }
+
             Assert.AreEqual(20, c.Count);
         }
 
@@ -93,6 +99,11 @@ namespace Combinatorics.NugetTests
             var integers = new List<int> { 1, 2, 3, 4, 5, 6 };
 
             var c = new Combinations<int>(integers, 2, GenerateOption.WithRepetition);
+
+            foreach (var v in c)
+            {
+                System.Diagnostics.Debug.WriteLine(string.Join(",", v));
+            }
 
             Assert.AreEqual(21, c.Count);
         }
@@ -118,6 +129,11 @@ namespace Combinatorics.NugetTests
 
             var v = new Variations<int>(integers, 3, GenerateOption.WithoutRepetition);
 
+            foreach (var vv in v)
+            {
+                System.Diagnostics.Debug.WriteLine(string.Join(",", vv));
+            }
+
             Assert.AreEqual(120, v.Count);
         }
 
@@ -137,6 +153,11 @@ namespace Combinatorics.NugetTests
             var integers = new List<int> { 1, 2, 3, 4, 5, 6 };
 
             var v = new Variations<int>(integers, 3, GenerateOption.WithRepetition);
+
+            foreach (var vv in v)
+            {
+                System.Diagnostics.Debug.WriteLine(string.Join(",", vv));
+            }
 
             Assert.AreEqual(216, v.Count);
         }
