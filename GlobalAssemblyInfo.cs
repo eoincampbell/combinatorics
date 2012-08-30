@@ -15,5 +15,5 @@ using System.Reflection;
 [assembly: AssemblyDescription("A .NET Assembly containing IEnumerable Collections for generating permutations, combinations & variations of sequences of items.")]
 
 [assembly: AssemblyVersion("1.0.3")]
-[assembly: AssemblyFileVersion("1.0.3.242")]
-[assembly: AssemblyInformationalVersion("1.0.3.242")]
+[assembly: AssemblyFileVersion("1.0.3.243")]
+[assembly: AssemblyInformationalVersion("1.0.3.243")]
