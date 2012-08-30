@@ -81,7 +81,7 @@ namespace Combinatorics.Collections {
         /// Gets an enumerator for collecting the list of permutations.
         /// </summary>
         /// <returns>The enumerator.</returns>
-        public virtual IEnumerator GetEnumerator() {
+        public virtual IEnumerator<IList<T>> GetEnumerator() {
             return new Enumerator(this);
         }
 
@@ -89,7 +89,7 @@ namespace Combinatorics.Collections {
         /// Gets an enumerator for collecting the list of permutations.
         /// </summary>
         /// <returns>The enumerator.</returns>
-        IEnumerator<IList<T>> IEnumerable<IList<T>>.GetEnumerator() {
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
             return new Enumerator(this);
         }
 
@@ -156,7 +156,7 @@ namespace Combinatorics.Collections {
             /// <summary>
             /// The current permutation.
             /// </summary>
-            public object Current {
+            object System.Collections.IEnumerator.Current {
                 get {
                     if(myPosition == Position.InSet) {
                         return new List<T>(myValues);
@@ -170,7 +170,8 @@ namespace Combinatorics.Collections {
             /// <summary>
             /// The current permutation.
             /// </summary>
-            IList<T> IEnumerator<IList<T>>.Current {
+            public IList<T> Current
+            {
                 get {
                     if(myPosition == Position.InSet) {
                         return new List<T>(myValues);
