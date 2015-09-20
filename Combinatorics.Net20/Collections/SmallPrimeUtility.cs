@@ -54,13 +54,8 @@ namespace Combinatorics.Collections {
         /// <param name="rhs">Right Hand Side argument, expressed as list of prime factors.</param>
         /// <returns>Product, expressed as list of prime factors.</returns>
         public static List<int> MultiplyPrimeFactors(IList<int> lhs, IList<int> rhs) {
-            List<int> product = new List<int>();
-            foreach(int prime in lhs) {
-                product.Add(prime);
-            }
-            foreach(int prime in rhs) {
-                product.Add(prime);
-            }
+            List<int> product = new List<int>(lhs);
+            product.AddRange(rhs);
             product.Sort();
             return product;
         }
@@ -77,10 +72,7 @@ namespace Combinatorics.Collections {
         /// <param name="denominator">Denominator argument, expressed as list of prime factors.</param>
         /// <returns>Resultant, expressed as list of prime factors.</returns>
         public static List<int> DividePrimeFactors(IList<int> numerator, IList<int> denominator) {
-            List<int> product = new List<int>();
-            foreach(int prime in numerator) {
-                product.Add(prime);
-            }
+            List<int> product = new List<int>(numerator);
             foreach(int prime in denominator) {
                 product.Remove(prime);
             }
@@ -127,7 +119,7 @@ namespace Combinatorics.Collections {
             // Scan sieve for primes...
             myPrimes = new List<int>();
             for(int i = 2; i < 65536; ++i) {
-                if(sieve[i] == true) {
+                if(sieve[i]) {
                     myPrimes.Add(i);
                 }
             }
