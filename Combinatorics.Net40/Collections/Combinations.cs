@@ -185,7 +185,7 @@ namespace Combinatorics.Collections {
                 if(myCurrentList == null) {
                     myCurrentList = new List<T>();
                     int index = 0;
-                    IList<bool> currentPermutation = (IList<bool>)myPermutationsEnumerator.Current;
+                    IList<bool> currentPermutation = myPermutationsEnumerator.Current;
                     for(int i = 0; i < currentPermutation.Count; ++i) {
                         if(currentPermutation[i] == false) {
                             myCurrentList.Add(myParent.myValues[index]);
@@ -293,17 +293,11 @@ namespace Combinatorics.Collections {
         private void Initialize(IList<T> values, int lowerIndex, GenerateOption type) {
             myMetaCollectionType = type;
             myLowerIndex = lowerIndex;
-            myValues = new List<T>();
-            myValues.AddRange(values);
+            myValues = new List<T>(values);
             List<bool> myMap = new List<bool>();
             if(type == GenerateOption.WithoutRepetition) {
                 for(int i = 0; i < myValues.Count; ++i) {
-                    if(i >= myValues.Count - myLowerIndex) {
-                        myMap.Add(false);
-                    }
-                    else {
-                        myMap.Add(true);
-                    }
+                    myMap.Add(i < myValues.Count - myLowerIndex);
                 }
             }
             else {

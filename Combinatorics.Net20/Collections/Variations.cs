@@ -302,7 +302,7 @@ namespace Combinatorics.Collections {
                 if(myCurrentList == null) {
                     myCurrentList = new List<T>();
                     int index = 0;
-                    IList<int> currentPermutation = (IList<int>)myPermutationsEnumerator.Current;
+                    IList<int> currentPermutation = myPermutationsEnumerator.Current;
                     for(int i = 0; i < myParent.LowerIndex; ++i) {
                         myCurrentList.Add(myParent.myValues[0]);
                     }
@@ -404,8 +404,7 @@ namespace Combinatorics.Collections {
         private void Initialize(IList<T> values, int lowerIndex, GenerateOption type) {
             myMetaCollectionType = type;
             myLowerIndex = lowerIndex;
-            myValues = new List<T>();
-            myValues.AddRange(values);
+            myValues = new List<T>(values);
             if(type == GenerateOption.WithoutRepetition) {
                 List<int> myMap = new List<int>();
                 int index = 0;

@@ -1,6 +1,6 @@
 @echo off
 devenv Combinatorics.sln /Clean
-devenv Combinatorics.sln /Build Debug
+devenv Combinatorics.sln /Build Release
 
 if exist Nuget\lib rmdir /S /Q Nuget\lib
 

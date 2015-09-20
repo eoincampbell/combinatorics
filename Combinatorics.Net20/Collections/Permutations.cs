@@ -138,8 +138,7 @@ namespace Combinatorics.Collections {
             /// </remarks>
             public bool MoveNext() {
                 if(myPosition == Position.BeforeFirst) {
-                    myValues = new List<T>(myParent.myValues.Count);
-                    myValues.AddRange(myParent.myValues);
+                    myValues = new List<T>(myParent.myValues);
                     Array.Sort(myLexicographicalOrders);
                     myPosition = Position.InSet;
                 } else if(myPosition == Position.InSet) {
@@ -361,8 +360,7 @@ namespace Combinatorics.Collections {
         /// </remarks>
         private void Initialize(IList<T> values, GenerateOption type, IComparer<T> comparer) {
             myMetaCollectionType = type;
-            myValues = new List<T>(values.Count);
-            myValues.AddRange(values);
+            myValues = new List<T>(values);
             myLexicographicOrders = new int[values.Count];
             if(type == GenerateOption.WithRepetition) {
                 for(int i = 0; i < myLexicographicOrders.Length; ++i) {
