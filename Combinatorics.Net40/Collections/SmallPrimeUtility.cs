@@ -3,6 +3,7 @@
 
 using System.Collections.Generic;
 using System.Collections;
+using System.Linq;
 
 namespace Combinatorics.Collections {
     /// <summary>
@@ -28,16 +29,21 @@ namespace Combinatorics.Collections {
         /// </summary>
         /// <param name="i">The number to factorize, must be positive.</param>
         /// <returns>A simple list of factors.</returns>
-        public static List<int> Factor(int i) {
-            int primeIndex = 0;
-            int prime = PrimeTable[primeIndex];
-            List<int> factors = new List<int>();
-            while(i > 1) {
-                if(i % prime == 0) {
+        public static List<int> Factor(int i)
+        {
+            var primeIndex = 0;
+            var prime = PrimeTable[primeIndex];
+            var factors = new List<int>();
+
+            while (i > 1)
+            {
+                if(i % prime == 0)
+                {
                     factors.Add(prime);
                     i /= prime;
                 }
-                else {
+                else
+                {
                     ++primeIndex;
                     prime = PrimeTable[primeIndex];
                 }
@@ -53,15 +59,12 @@ namespace Combinatorics.Collections {
         /// <param name="lhs">Left Hand Side argument, expressed as list of prime factors.</param>
         /// <param name="rhs">Right Hand Side argument, expressed as list of prime factors.</param>
         /// <returns>Product, expressed as list of prime factors.</returns>
-        public static List<int> MultiplyPrimeFactors(IList<int> lhs, IList<int> rhs) {
-            List<int> product = new List<int>();
-            foreach(int prime in lhs) {
-                product.Add(prime);
-            }
-            foreach(int prime in rhs) {
-                product.Add(prime);
-            }
+        public static List<int> MultiplyPrimeFactors(IList<int> lhs, IList<int> rhs)
+        {
+            var product = lhs.Concat(rhs).ToList();
+            
             product.Sort();
+
             return product;
         }
 
@@ -76,12 +79,11 @@ namespace Combinatorics.Collections {
         /// <param name="numerator">Numerator argument, expressed as list of prime factors.</param>
         /// <param name="denominator">Denominator argument, expressed as list of prime factors.</param>
         /// <returns>Resultant, expressed as list of prime factors.</returns>
-        public static List<int> DividePrimeFactors(IList<int> numerator, IList<int> denominator) {
-            List<int> product = new List<int>();
-            foreach(int prime in numerator) {
-                product.Add(prime);
-            }
-            foreach(int prime in denominator) {
+        public static List<int> DividePrimeFactors(IList<int> numerator, IList<int> denominator)
+        {
+            var product = numerator.ToList();
+            foreach(var prime in denominator)
+            { 
                 product.Remove(prime);
             }
             return product;
@@ -92,18 +94,16 @@ namespace Combinatorics.Collections {
         /// </summary>
         /// <param name="value">Integer, expressed as list of prime factors.</param>
         /// <returns>Standard long representation.</returns>
-        public static long EvaluatePrimeFactors(IList<int> value) {
-            long accumulator = 1;
-            foreach(int prime in value) {
-                accumulator *= prime;
-            }
-            return accumulator;
+        public static long EvaluatePrimeFactors(IList<int> value)
+        {
+            return value.Aggregate<int, long>(1, (current, prime) => current*prime);
         }
 
         /// <summary>
         /// Static initializer, set up prime table.
         /// </summary>
-        static SmallPrimeUtility() {
+        static SmallPrimeUtility()
+        {
             CalculatePrimes();
         }
 
@@ -113,22 +113,27 @@ namespace Combinatorics.Collections {
         /// Small tables are best built using the Sieve Of Eratosthenes,
         /// Reference: http://primes.utm.edu/glossary/page.php?sort=SieveOfEratosthenes
         /// </summary>
-        private static void CalculatePrimes() {
+        private static void CalculatePrimes()
+        {
             // Build Sieve Of Eratosthenes
-            BitArray sieve = new BitArray(65536, true);
-            for(int possiblePrime = 2; possiblePrime <= 256; ++possiblePrime) {
-                if(sieve[possiblePrime] == true) {
-                    // It is prime, so remove all future factors...
-                    for(int nonPrime = 2 * possiblePrime; nonPrime < 65536; nonPrime += possiblePrime) {
-                        sieve[nonPrime] = false;
-                    }
+            var sieve = new BitArray(65536, true);
+            for(var possiblePrime = 2; possiblePrime <= 256; ++possiblePrime)
+            {
+                if (!sieve[possiblePrime]) continue;
+                
+                // It is prime, so remove all future factors...
+                for(var nonPrime = 2 * possiblePrime; nonPrime < 65536; nonPrime += possiblePrime)
+                {
+                    sieve[nonPrime] = false;
                 }
             }
             // Scan sieve for primes...
-            myPrimes = new List<int>();
-            for(int i = 2; i < 65536; ++i) {
-                if(sieve[i] == true) {
-                    myPrimes.Add(i);
+            _myPrimes = new List<int>();
+            for(var i = 2; i < 65536; ++i)
+            {
+                if(sieve[i])
+                {
+                    _myPrimes.Add(i);
                 }
             }
 
@@ -137,13 +142,9 @@ namespace Combinatorics.Collections {
         /// <summary>
         /// A List of all primes from 2 to 2^16.
         /// </summary>
-        public static IList<int> PrimeTable {
-            get {
-                return myPrimes;
-            }
-        }
+        public static IList<int> PrimeTable => _myPrimes;
 
-        private static List<int> myPrimes = new List<int>();
+        private static List<int> _myPrimes = new List<int>();
 
     }
 }
