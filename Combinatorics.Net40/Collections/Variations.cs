@@ -2,6 +2,7 @@
 // Distributed under license terms of CPOL http://www.codeproject.com/info/cpol10.aspx
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Combinatorics.Collections {
@@ -24,15 +25,14 @@ namespace Combinatorics.Collections {
     /// The equality of multiple inputs is not considered when generating variations.
     /// </remarks>
     /// <typeparam name="T">The type of the values within the list.</typeparam>
-    public class Variations<T> : IMetaCollection<T> {
+    public class Variations<T> : IMetaCollection<T>
+    {
         #region Constructors
 
         /// <summary>
         /// No default constructor, must provided a list of values and size.
         /// </summary>
-        protected Variations() {
-            ;
-        }
+        protected Variations() { }
 
         /// <summary>
         /// Create a variation set from the indicated list of values.
@@ -41,7 +41,8 @@ namespace Combinatorics.Collections {
         /// </summary>
         /// <param name="values">List of values to select Variations from.</param>
         /// <param name="lowerIndex">The size of each variation set to return.</param>
-        public Variations(IList<T> values, int lowerIndex) {
+        public Variations(IEnumerable<T> values, int lowerIndex)
+        {
             Initialize(values, lowerIndex, GenerateOption.WithoutRepetition);
         }
 
@@ -52,7 +53,8 @@ namespace Combinatorics.Collections {
         /// <param name="values">List of values to select variations from.</param>
         /// <param name="lowerIndex">The size of each vatiation set to return.</param>
         /// <param name="type">Type indicates whether to use repetition in set generation.</param>
-        public Variations(IList<T> values, int lowerIndex, GenerateOption type) {
+        public Variations(IEnumerable<T> values, int lowerIndex, GenerateOption type)
+        {
             Initialize(values, lowerIndex, type);
         }
 
@@ -64,26 +66,26 @@ namespace Combinatorics.Collections {
         /// Gets an enumerator for the collection of Variations.
         /// </summary>
         /// <returns>The enumerator.</returns>
-        public IEnumerator<IList<T>> GetEnumerator() {
-            if(Type == GenerateOption.WithRepetition) {
+        public IEnumerator<IList<T>> GetEnumerator()
+        {
+            if(Type == GenerateOption.WithRepetition)
+            {
                 return new EnumeratorWithRepetition(this);
             }
-            else {
-                return new EnumeratorWithoutRepetition(this);
-            }
+            return new EnumeratorWithoutRepetition(this);
         }
 
         /// <summary>
         /// Gets an enumerator for the collection of Variations.
         /// </summary>
         /// <returns>The enumerator.</returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
-            if(Type == GenerateOption.WithRepetition) {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            if(Type == GenerateOption.WithRepetition)
+            {
                 return new EnumeratorWithRepetition(this);
             }
-            else {
-                return new EnumeratorWithoutRepetition(this);
-            }
+            return new EnumeratorWithoutRepetition(this);
         }
 
         #endregion
@@ -93,16 +95,17 @@ namespace Combinatorics.Collections {
         /// <summary>
         /// An enumerator for Variations when the type is set to WithRepetition.
         /// </summary>
-        public class EnumeratorWithRepetition : IEnumerator<IList<T>> {
-
+        public class EnumeratorWithRepetition : IEnumerator<IList<T>>
+        {
             #region Constructors
 
             /// <summary>
             /// Construct a enumerator with the parent object.
             /// </summary>
             /// <param name="source">The source Variations object.</param>
-            public EnumeratorWithRepetition(Variations<T> source) {
-                myParent = source;
+            public EnumeratorWithRepetition(Variations<T> source)
+            {
+                _myParent = source;
                 Reset();
             }
 
@@ -113,9 +116,10 @@ namespace Combinatorics.Collections {
             /// <summary>
             /// Resets the Variations enumerator to the first variation.  
             /// </summary>
-            public void Reset() {
-                myCurrentList = null;
-                myListIndexes = null;
+            public void Reset()
+            {
+                _myCurrentList = null;
+                _myListIndexes = null;
             }
 
             /// <summary>
@@ -127,54 +131,68 @@ namespace Combinatorics.Collections {
             /// and overflow/carrying into others just like grade-school arithemtic.  If the 
             /// finaly carry flag is set, then we would wrap around and are therefore done.
             /// </remarks>
-            public bool MoveNext() {
-                int carry = 1;
-                if(myListIndexes == null) {
-                    myListIndexes = new List<int>();
-                    for(int i = 0; i < myParent.LowerIndex; ++i) {
-                        myListIndexes.Add(0);
+            public bool MoveNext()
+            {
+                var carry = 1;
+                if(_myListIndexes == null)
+                {
+                    _myListIndexes = new List<int>();
+                    for(var i = 0; i < _myParent.LowerIndex; ++i)
+                    {
+                        _myListIndexes.Add(0);
                     }
                     carry = 0;
                 }
-                else {
-                    for(int i = myListIndexes.Count - 1; i >= 0 && carry > 0; --i) {
-                        myListIndexes[i] += carry;
+                else
+                {
+                    for(var i = _myListIndexes.Count - 1; i >= 0 && carry > 0; --i)
+                    {
+                        _myListIndexes[i] += carry;
                         carry = 0;
-                        if(myListIndexes[i] >= myParent.UpperIndex) {
-                            myListIndexes[i] = 0;
-                            carry = 1;
+
+                        if (_myListIndexes[i] < _myParent.UpperIndex)
+                        {
+                            continue;
                         }
+                        
+                        _myListIndexes[i] = 0;
+                        carry = 1;
                     }
                 }
-                myCurrentList = null;
+                _myCurrentList = null;
                 return carry != 1;
             }
 
             /// <summary>
             /// The current variation
             /// </summary>
-            public IList<T> Current {
-                get {
+            public IList<T> Current
+            {
+                get
+                {
                     ComputeCurrent();
-                    return myCurrentList;
+                    return _myCurrentList;
                 }
             }
 
             /// <summary>
             /// The current variation.
             /// </summary>
-            object System.Collections.IEnumerator.Current {
-                get {
+            object IEnumerator.Current
+            {
+                get
+                {
                     ComputeCurrent();
-                    return myCurrentList;
+                    return _myCurrentList;
                 }
             }
 
             /// <summary>
             /// Cleans up non-managed resources, of which there are none used here.
             /// </summary>
-            public void Dispose() {
-                ;
+            public void Dispose()
+            {
+            
             }
 
             #endregion
@@ -184,12 +202,18 @@ namespace Combinatorics.Collections {
             /// <summary>
             /// Computes the current list based on the internal list index.
             /// </summary>
-            private void ComputeCurrent() {
-                if(myCurrentList == null) {
-                    myCurrentList = new List<T>();
-                    foreach(int index in myListIndexes) {
-                        myCurrentList.Add(myParent.myValues[index]);
-                    }
+            private void ComputeCurrent()
+            {
+                if (_myCurrentList != null)
+                {
+                    return;
+                }
+
+                _myCurrentList = new List<T>();
+
+                foreach (var index in _myListIndexes)
+                {
+                    _myCurrentList.Add(_myParent._myValues[index]);
                 }
             }
 
@@ -200,17 +224,17 @@ namespace Combinatorics.Collections {
             /// <summary>
             /// Parent object this is an enumerator for.
             /// </summary>
-            private Variations<T> myParent;
+            private readonly Variations<T> _myParent;
 
             /// <summary>
             /// The current list of values, this is lazy evaluated by the Current property.
             /// </summary>
-            private List<T> myCurrentList;
+            private List<T> _myCurrentList;
 
             /// <summary>
             /// An enumertor of the parents list of lexicographic orderings.
             /// </summary>
-            private List<int> myListIndexes;
+            private List<int> _myListIndexes;
 
             #endregion
         }
@@ -218,7 +242,8 @@ namespace Combinatorics.Collections {
         /// <summary>
         /// An enumerator for Variations when the type is set to WithoutRepetition.
         /// </summary>
-        public class EnumeratorWithoutRepetition : IEnumerator<IList<T>> {
+        public class EnumeratorWithoutRepetition : IEnumerator<IList<T>>
+        {
 
             #region Constructors
 
@@ -226,9 +251,10 @@ namespace Combinatorics.Collections {
             /// Construct a enumerator with the parent object.
             /// </summary>
             /// <param name="source">The source Variations object.</param>
-            public EnumeratorWithoutRepetition(Variations<T> source) {
-                myParent = source;
-                myPermutationsEnumerator = (Permutations<int>.Enumerator)myParent.myPermutations.GetEnumerator();
+            public EnumeratorWithoutRepetition(Variations<T> source)
+            {
+                _myParent = source;
+                _myPermutationsEnumerator = (Permutations<int>.Enumerator)_myParent._myPermutations.GetEnumerator();
             }
 
             #endregion
@@ -238,45 +264,52 @@ namespace Combinatorics.Collections {
             /// <summary>
             /// Resets the Variations enumerator to the first variation.  
             /// </summary>
-            public void Reset() {
-                myPermutationsEnumerator.Reset();
+            public void Reset()
+            {
+                _myPermutationsEnumerator.Reset();
             }
 
             /// <summary>
             /// Advances to the next variation.
             /// </summary>
             /// <returns>True if successfully moved to next variation, False if no more variations exist.</returns>
-            public bool MoveNext() {
-                bool ret = myPermutationsEnumerator.MoveNext();
-                myCurrentList = null;
+            public bool MoveNext()
+            {
+                var ret = _myPermutationsEnumerator.MoveNext();
+                _myCurrentList = null;
                 return ret;
             }
 
             /// <summary>
             /// The current variation.
             /// </summary>
-            public IList<T> Current {
-                get {
+            public IList<T> Current
+            {
+                get
+                {
                     ComputeCurrent();
-                    return myCurrentList;
+                    return _myCurrentList;
                 }
             }
 
             /// <summary>
             /// The current variation.
             /// </summary>
-            object System.Collections.IEnumerator.Current {
-                get {
+            object IEnumerator.Current
+            {
+                get
+                {
                     ComputeCurrent();
-                    return myCurrentList;
+                    return _myCurrentList;
                 }
             }
 
             /// <summary>
             /// Cleans up non-managed resources, of which there are none used here.
             /// </summary>
-            public void Dispose() {
-                ;
+            public void Dispose()
+            {
+                
             }
 
             #endregion
@@ -298,25 +331,35 @@ namespace Combinatorics.Collections {
             /// Permutations:  {- 1 - - 3 2} (- is Int32.MaxValue)
             /// Generates set: {B F E}
             /// </remarks>
-            private void ComputeCurrent() {
-                if(myCurrentList == null) {
-                    myCurrentList = new List<T>();
-                    int index = 0;
-                    IList<int> currentPermutation = (IList<int>)myPermutationsEnumerator.Current;
-                    for(int i = 0; i < myParent.LowerIndex; ++i) {
-                        myCurrentList.Add(myParent.myValues[0]);
-                    }
-                    for(int i = 0; i < currentPermutation.Count; ++i) {
-                        int position = currentPermutation[i];
-                        if(position != Int32.MaxValue) {
-                            myCurrentList[position] = myParent.myValues[index];
-                            if(myParent.Type == GenerateOption.WithoutRepetition) {
-                                ++index;
-                            }
-                        }
-                        else {
+            private void ComputeCurrent()
+            {
+                if (_myCurrentList != null)
+                {
+                    return;
+                }
+
+                _myCurrentList = new List<T>();
+                var index = 0;
+                var currentPermutation = _myPermutationsEnumerator.Current;
+
+                for (var i = 0; i < _myParent.LowerIndex; ++i)
+                {
+                    _myCurrentList.Add(_myParent._myValues[0]);
+                }
+
+                foreach (var position in currentPermutation)
+                {
+                    if(position != int.MaxValue)
+                    {
+                        _myCurrentList[position] = _myParent._myValues[index];
+                        if(_myParent.Type == GenerateOption.WithoutRepetition)
+                        {
                             ++index;
                         }
+                    }
+                    else
+                    {
+                        ++index;
                     }
                 }
             }
@@ -328,17 +371,17 @@ namespace Combinatorics.Collections {
             /// <summary>
             /// Parent object this is an enumerator for.
             /// </summary>
-            private Variations<T> myParent;
+            private readonly Variations<T> _myParent;
 
             /// <summary>
             /// The current list of values, this is lazy evaluated by the Current property.
             /// </summary>
-            private List<T> myCurrentList;
+            private List<T> _myCurrentList;
 
             /// <summary>
             /// An enumertor of the parents list of lexicographic orderings.
             /// </summary>
-            private Permutations<int>.Enumerator myPermutationsEnumerator;
+            private readonly Permutations<int>.Enumerator _myPermutationsEnumerator;
 
             #endregion
         }
@@ -353,43 +396,32 @@ namespace Combinatorics.Collections {
         /// Variations with repetitions does not behave like other meta-collections and it's
         /// count is equal to N^P, where N is the upper index and P is the lower index.
         /// </remarks>
-        public long Count {
-            get {
-                if(Type == GenerateOption.WithoutRepetition) {
-                    return myPermutations.Count;
+        public long Count
+        {
+            get
+            {
+                if(Type == GenerateOption.WithoutRepetition)
+                {
+                    return _myPermutations.Count;
                 }
-                else {
-                    return (long)Math.Pow(UpperIndex, LowerIndex);
-                }
+                return (long)Math.Pow(UpperIndex, LowerIndex);
             }
         }
 
         /// <summary>
         /// The type of Variations set that is generated.
         /// </summary>
-        public GenerateOption Type {
-            get {
-                return myMetaCollectionType;
-            }
-        }
+        public GenerateOption Type { get; private set; }
 
         /// <summary>
         /// The upper index of the meta-collection, equal to the number of items in the initial set.
         /// </summary>
-        public int UpperIndex {
-            get {
-                return myValues.Count;
-            }
-        }
+        public int UpperIndex => _myValues.Count;
 
         /// <summary>
         /// The lower index of the meta-collection, equal to the number of items returned each iteration.
         /// </summary>
-        public int LowerIndex {
-            get {
-                return myLowerIndex;
-            }
-        }
+        public int LowerIndex { get; private set; }
 
         #endregion
 
@@ -401,27 +433,26 @@ namespace Combinatorics.Collections {
         /// <param name="values">List of values to select variations from.</param>
         /// <param name="lowerIndex">The size of each variation set to return.</param>
         /// <param name="type">The type of variations set to generate.</param>
-        private void Initialize(IList<T> values, int lowerIndex, GenerateOption type) {
-            myMetaCollectionType = type;
-            myLowerIndex = lowerIndex;
-            myValues = new List<T>();
-            myValues.AddRange(values);
-            if(type == GenerateOption.WithoutRepetition) {
-                List<int> myMap = new List<int>();
-                int index = 0;
-                for(int i = 0; i < myValues.Count; ++i) {
-                    if(i >= myValues.Count - myLowerIndex) {
-                        myMap.Add(index++);
-                    }
-                    else {
-                        myMap.Add(Int32.MaxValue);
-                    }
-                }
-                myPermutations = new Permutations<int>(myMap);
+        private void Initialize(IEnumerable<T> values, int lowerIndex, GenerateOption type)
+        {
+            Type = type;
+            LowerIndex = lowerIndex;
+            _myValues = new List<T>();
+            _myValues.AddRange(values);
+
+            if (type != GenerateOption.WithoutRepetition)
+            {
+                return;
             }
-            else {
-                ; // myPermutations isn't used.
+
+            var myMap = new List<int>();
+            var index = 0;
+            for(var i = 0; i < _myValues.Count; ++i)
+            {
+                myMap.Add(i >= _myValues.Count - LowerIndex ? index++ : int.MaxValue);
             }
+
+            _myPermutations = new Permutations<int>(myMap);
         }
 
         #endregion
@@ -431,22 +462,12 @@ namespace Combinatorics.Collections {
         /// <summary>
         /// Copy of values object is intialized with, required for enumerator reset.
         /// </summary>
-        private List<T> myValues;
+        private List<T> _myValues;
 
         /// <summary>
         /// Permutations object that handles permutations on int for variation inclusion and ordering.
         /// </summary>
-        private Permutations<int> myPermutations;
-
-        /// <summary>
-        /// The type of the variation collection.
-        /// </summary>
-        private GenerateOption myMetaCollectionType;
-
-        /// <summary>
-        /// The lower index defined in the constructor.
-        /// </summary>
-        private int myLowerIndex;
+        private Permutations<int> _myPermutations;
 
         #endregion
     }

@@ -1,7 +1,8 @@
 // Copyright 2008 Adrian Akison
 // Distributed under license terms of CPOL http://www.codeproject.com/info/cpol10.aspx
-
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Combinatorics.Collections {
     /// <summary>
@@ -28,15 +29,14 @@ namespace Combinatorics.Collections {
     /// {A A B} {A A B} {A B B} {A B B}
     /// </remarks>
     /// <typeparam name="T">The type of the values within the list.</typeparam>
-    public class Combinations<T> : IMetaCollection<T> {
+    public class Combinations<T> : IMetaCollection<T>
+    {
         #region Constructors
 
         /// <summary>
         /// No default constructor, must provided a list of values and size.
         /// </summary>
-        protected Combinations() {
-            ;
-        }
+        protected Combinations() { }
 
         /// <summary>
         /// Create a combination set from the provided list of values.
@@ -45,7 +45,8 @@ namespace Combinatorics.Collections {
         /// </summary>
         /// <param name="values">List of values to select combinations from.</param>
         /// <param name="lowerIndex">The size of each combination set to return.</param>
-        public Combinations(IList<T> values, int lowerIndex) {
+        public Combinations(IList<T> values, int lowerIndex)
+        {
             Initialize(values, lowerIndex, GenerateOption.WithoutRepetition);
         }
 
@@ -56,7 +57,8 @@ namespace Combinatorics.Collections {
         /// <param name="values">List of values to select combinations from.</param>
         /// <param name="lowerIndex">The size of each combination set to return.</param>
         /// <param name="type">The type of Combinations set to generate.</param>
-        public Combinations(IList<T> values, int lowerIndex, GenerateOption type) {
+        public Combinations(IList<T> values, int lowerIndex, GenerateOption type)
+        {
             Initialize(values, lowerIndex, type);
         }
 
@@ -68,7 +70,8 @@ namespace Combinatorics.Collections {
         /// Gets an enumerator for collecting the list of combinations.
         /// </summary>
         /// <returns>The enumerator.</returns>
-        public IEnumerator<IList<T>> GetEnumerator() {
+        public IEnumerator<IList<T>> GetEnumerator()
+        {
             return new Enumerator(this);
         }
 
@@ -76,7 +79,8 @@ namespace Combinatorics.Collections {
         /// Gets an enumerator for collecting the list of combinations.
         /// </summary>
         /// <returns>The enumerator.</returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return new Enumerator(this);
         }
 
@@ -95,9 +99,10 @@ namespace Combinatorics.Collections {
             /// Construct a enumerator with the parent object.
             /// </summary>
             /// <param name="source">The source combinations object.</param>
-            public Enumerator(Combinations<T> source) {
-                myParent = source;
-                myPermutationsEnumerator = (Permutations<bool>.Enumerator)myParent.myPermutations.GetEnumerator();
+            public Enumerator(Combinations<T> source)
+            {
+                _myParent = source;
+                _myPermutationsEnumerator = (Permutations<bool>.Enumerator)_myParent._myPermutations.GetEnumerator();
             }
 
             #endregion
@@ -106,8 +111,9 @@ namespace Combinatorics.Collections {
             /// <summary>
             /// Resets the combinations enumerator to the first combination.  
             /// </summary>
-            public void Reset() {
-                myPermutationsEnumerator.Reset();
+            public void Reset()
+            {
+                _myPermutationsEnumerator.Reset();
             }
             
             /// <summary>
@@ -118,37 +124,43 @@ namespace Combinatorics.Collections {
             /// The heavy lifting is done by the permutations object, the combination is generated
             /// by creating a new list of those items that have a true in the permutation parrellel array.
             /// </remarks>
-            public bool MoveNext() {
-                bool ret = myPermutationsEnumerator.MoveNext();
-                myCurrentList = null;
+            public bool MoveNext()
+            {
+                var ret = _myPermutationsEnumerator.MoveNext();
+                _myCurrentList = null;
                 return ret;
             }
 
             /// <summary>
             /// The current combination
             /// </summary>
-            public IList<T> Current {
-                get {
+            public IList<T> Current
+            {
+                get
+                {
                     ComputeCurrent();
-                    return myCurrentList;
+                    return _myCurrentList;
                 }
             }
 
             /// <summary>
             /// The current combination
             /// </summary>
-            object System.Collections.IEnumerator.Current {
-                get {
+            object IEnumerator.Current
+            {
+                get
+                {
                     ComputeCurrent();
-                    return myCurrentList;
+                    return _myCurrentList;
                 }
             }
 
             /// <summary>
             /// Cleans up non-managed resources, of which there are none used here.
             /// </summary>
-            public void Dispose() {
-                ;
+            public void Dispose()
+            {
+                
             }
 
             #endregion
@@ -181,21 +193,29 @@ namespace Combinatorics.Collections {
             /// Generates set: {A   B B     D D    }
             /// Note: size of permutation is equal to upper index - 1 + lower index.
             /// </remarks>
-            private void ComputeCurrent() {
-                if(myCurrentList == null) {
-                    myCurrentList = new List<T>();
-                    int index = 0;
-                    IList<bool> currentPermutation = (IList<bool>)myPermutationsEnumerator.Current;
-                    for(int i = 0; i < currentPermutation.Count; ++i) {
-                        if(currentPermutation[i] == false) {
-                            myCurrentList.Add(myParent.myValues[index]);
-                            if(myParent.Type == GenerateOption.WithoutRepetition) {
-                                ++index;
-                            }
-                        }
-                        else {
+            private void ComputeCurrent()
+            {
+                if (_myCurrentList != null)
+                {
+                    return;
+                }
+
+                _myCurrentList = new List<T>();
+                var index = 0;
+                var currentPermutation = _myPermutationsEnumerator.Current;
+                foreach (var p in currentPermutation)
+                {
+                    if(!p)
+                    {
+                        _myCurrentList.Add(_myParent._myValues[index]);
+                        if(_myParent.Type == GenerateOption.WithoutRepetition)
+                        {
                             ++index;
                         }
+                    }
+                    else
+                    {
+                        ++index;
                     }
                 }
             }
@@ -207,17 +227,17 @@ namespace Combinatorics.Collections {
             /// <summary>
             /// Parent object this is an enumerator for.
             /// </summary>
-            private Combinations<T> myParent;
+            private readonly Combinations<T> _myParent;
 
             /// <summary>
             /// The current list of values, this is lazy evaluated by the Current property.
             /// </summary>
-            private List<T> myCurrentList;
+            private List<T> _myCurrentList;
 
             /// <summary>
             /// An enumertor of the parents list of lexicographic orderings.
             /// </summary>
-            private Permutations<bool>.Enumerator myPermutationsEnumerator;
+            private Permutations<bool>.Enumerator _myPermutationsEnumerator;
             
             #endregion
         }
@@ -230,36 +250,24 @@ namespace Combinatorics.Collections {
         /// This value is mathematically defined as Choose(M, N) where M is the set size
         /// and N is the subset size.  This is M! / (N! * (M-N)!).
         /// </summary>
-        public long Count {
-            get {
-                return myPermutations.Count;
-            }
-        }
+        public long Count => _myPermutations.Count;
 
         /// <summary>
         /// The type of Combinations set that is generated.
         /// </summary>
-        public GenerateOption Type {
-            get {
-                return myMetaCollectionType;
-            }
-        }
+        public GenerateOption Type => _myMetaCollectionType;
 
         /// <summary>
         /// The upper index of the meta-collection, equal to the number of items in the initial set.
         /// </summary>
-        public int UpperIndex {
-            get {
-                return myValues.Count;
-            }
-        }
+        public int UpperIndex => _myValues.Count;
 
         /// <summary>
         /// The lower index of the meta-collection, equal to the number of items returned each iteration.
         /// </summary>
         public int LowerIndex {
             get {
-                return myLowerIndex;
+                return _myLowerIndex;
             }
         }
 
@@ -290,31 +298,29 @@ namespace Combinatorics.Collections {
         /// E.g. 8 choose 3 generates:
         /// Map: {1 1 1 1 1 1 1 1 0 0 0} (7 trues, 3 falses).
         /// </remarks>
-        private void Initialize(IList<T> values, int lowerIndex, GenerateOption type) {
-            myMetaCollectionType = type;
-            myLowerIndex = lowerIndex;
-            myValues = new List<T>();
-            myValues.AddRange(values);
-            List<bool> myMap = new List<bool>();
-            if(type == GenerateOption.WithoutRepetition) {
-                for(int i = 0; i < myValues.Count; ++i) {
-                    if(i >= myValues.Count - myLowerIndex) {
-                        myMap.Add(false);
-                    }
-                    else {
-                        myMap.Add(true);
-                    }
-                }
+        private void Initialize(IList<T> values, int lowerIndex, GenerateOption type)
+        {
+            _myMetaCollectionType = type;
+            _myLowerIndex = lowerIndex;
+            _myValues = new List<T>();
+            _myValues.AddRange(values);
+            var myMap = new List<bool>();
+            if(type == GenerateOption.WithoutRepetition)
+            {
+                myMap.AddRange(_myValues.Select((t, i) => i < _myValues.Count - _myLowerIndex));
             }
-            else {
-                for(int i = 0; i < values.Count - 1; ++i) {
+            else
+            {
+                for(var i = 0; i < values.Count - 1; ++i)
+                {
                     myMap.Add(true);
                 }
-                for(int i = 0; i < myLowerIndex; ++i) {
+                for(var i = 0; i < _myLowerIndex; ++i)
+                {
                     myMap.Add(false);
                 }
             }
-            myPermutations = new Permutations<bool>(myMap);
+            _myPermutations = new Permutations<bool>(myMap);
         }
 
         #endregion
@@ -324,22 +330,22 @@ namespace Combinatorics.Collections {
         /// <summary>
         /// Copy of values object is intialized with, required for enumerator reset.
         /// </summary>
-        private List<T> myValues;
+        private List<T> _myValues;
 
         /// <summary>
         /// Permutations object that handles permutations on booleans for combination inclusion.
         /// </summary>
-        private Permutations<bool> myPermutations;
+        private Permutations<bool> _myPermutations;
 
         /// <summary>
         /// The type of the combination collection.
         /// </summary>
-        private GenerateOption myMetaCollectionType;
+        private GenerateOption _myMetaCollectionType;
 
         /// <summary>
         /// The lower index defined in the constructor.
         /// </summary>
-        private int myLowerIndex;
+        private int _myLowerIndex;
 
         #endregion
     }
