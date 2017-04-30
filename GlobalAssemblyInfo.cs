@@ -14,6 +14,6 @@ using System.Reflection;
 [assembly: AssemblyCopyright("Combinatorics Generation Copyright © Adrian Akison 2012, Released under the CodeProject Open Licence (CPOL) -  http://www.codeproject.com/info/cpol10.aspx")]
 [assembly: AssemblyDescription("A .NET Assembly containing IEnumerable Collections for generating permutations, combinations & variations of sequences of items.")]
 
-[assembly: AssemblyVersion("1.0.3")]
-[assembly: AssemblyFileVersion("1.0.3.243")]
-[assembly: AssemblyInformationalVersion("1.0.3.243")]
+[assembly: AssemblyVersion("1.0.4.*")]
+[assembly: AssemblyFileVersion("1.0.4.0")]
+[assembly: AssemblyInformationalVersion("1.0.4.0")]

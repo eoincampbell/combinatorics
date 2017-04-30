@@ -1,3 +1,3 @@
 ﻿using System.Reflection;
 
-[assembly: AssemblyProduct("Combinatorics Library For .NET")]
+[assembly: AssemblyProduct("Combinatorics Library For .NET Standard")]

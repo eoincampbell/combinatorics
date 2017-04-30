@@ -53,12 +53,6 @@
     <Compile Include="CombinatoricTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Combinatorics.Net40\Combinatorics.csproj">
-      <Project>{4199fe5f-137a-44ff-8d77-91cebb37322f}</Project>
-      <Name>Combinatorics</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

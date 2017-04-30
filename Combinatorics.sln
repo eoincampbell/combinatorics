@@ -5,8 +5,6 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DE09F103-DDBC-49CB-88D1-AC506C55D446}"
 	ProjectSection(SolutionItems) = preProject
-		Build.bat = Build.bat
-		Nuget\Combinatorics.nuspec = Nuget\Combinatorics.nuspec
 		combinatorics.png = combinatorics.png
 		Combinatorics.snk = Combinatorics.snk
 		GlobalAssemblyInfo.cs = GlobalAssemblyInfo.cs
@@ -15,20 +13,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Combinatorics", "Combinatorics.Net40\Combinatorics.csproj", "{4199FE5F-137A-44FF-8D77-91CEBB37322F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Combinatorics.LocalTests", "Combinatorics.LocalTests\Combinatorics.LocalTests.csproj", "{D4A201C4-BF68-4680-83CE-6F282303EF8C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{447C2ECC-4874-4556-A990-83F786D710C6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Combinatorics.NugetTests", "Combinatorics.NugetTests\Combinatorics.NugetTests.csproj", "{B9891855-6826-4126-A8C6-5EAB78FE2CB9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{AF2182A3-FE10-4489-9B36-E5ECFD459368}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Combinatorics", "Combinatorics\Combinatorics.csproj", "{4199FE5F-137A-44FF-8D77-91CEBB37322F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,10 +27,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4199FE5F-137A-44FF-8D77-91CEBB37322F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4199FE5F-137A-44FF-8D77-91CEBB37322F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4199FE5F-137A-44FF-8D77-91CEBB37322F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4199FE5F-137A-44FF-8D77-91CEBB37322F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D4A201C4-BF68-4680-83CE-6F282303EF8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D4A201C4-BF68-4680-83CE-6F282303EF8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4A201C4-BF68-4680-83CE-6F282303EF8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -48,6 +35,10 @@ Global
 		{B9891855-6826-4126-A8C6-5EAB78FE2CB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9891855-6826-4126-A8C6-5EAB78FE2CB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9891855-6826-4126-A8C6-5EAB78FE2CB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4199FE5F-137A-44FF-8D77-91CEBB37322F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4199FE5F-137A-44FF-8D77-91CEBB37322F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4199FE5F-137A-44FF-8D77-91CEBB37322F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4199FE5F-137A-44FF-8D77-91CEBB37322F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
