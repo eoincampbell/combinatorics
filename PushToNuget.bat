@@ -1,3 +1,3 @@
 @echo off
-nuget pack Nuget\Combinatorics.nuspec
+nuget pack Combinatorics\Combinatorics.csproj
 nuget push %1

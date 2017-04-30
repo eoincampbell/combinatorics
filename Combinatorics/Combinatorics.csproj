@@ -57,6 +57,7 @@
     <None Include="..\Combinatorics.snk">
       <Link>Combinatorics.snk</Link>
     </None>
+    <None Include="Combinatorics.nuspec" />
     <None Include="project.json" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
