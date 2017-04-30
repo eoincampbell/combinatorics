@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
-<package >
+<package>
   <metadata>
     <id>Combinatorics</id>
-    <version>1.0.4.0</version>
+    <version>1.0.4.1</version>
     <title>Combinatorics Library for .NET Standard</title>
-    <authors>Adrian Akison, Eoin Campbell</authors>
-    <owners>Eoin Campbell</owners>
+    <authors>Adrian Akison, EoinC</authors>
+    <owners>EoinC</owners>
     <licenseUrl>https://github.com/eoincampbell/combinatorics/blob/master/LICENCE</licenseUrl>
     <projectUrl>https://github.com/eoincampbell/combinatorics</projectUrl>
     <iconUrl>https://raw.github.com/eoincampbell/combinatorics/master/combinatorics.png</iconUrl>
@@ -15,5 +15,15 @@
     <releaseNotes>Fixed structure of Package to prevent irrelevant build scripts being included</releaseNotes>
     <copyright>Copyright © 2017</copyright>
     <tags>Combinatorics Combination Permutation Variation .NET Standard Library</tags>
+    <dependencies>
+      <group targetFramework=".NETStandard1.2">
+        <dependency id="Microsoft.NETCore.Portable.Compatibility" version="1.0.1" exclude="Build,Analyzers" />
+        <dependency id="NETStandard.Library" version="1.6.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
   </metadata>
+  <files>
+    <file src="bin\Combinatorics.dll" target="lib\netstandard1.2\Combinatorics.dll" />
+    <file src="bin\Combinatorics.xml" target="lib\netstandard1.2\Combinatorics.xml" />
+  </files>
 </package>

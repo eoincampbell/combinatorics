@@ -1,3 +1,2 @@
 @echo off
-nuget pack Combinatorics\Combinatorics.csproj
-nuget push %1
+Nuget\nuget.exe pack Combinatorics\Combinatorics.nuspec -Properties Configuration=Release
