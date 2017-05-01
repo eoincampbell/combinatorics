@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Combinatorics</id>
-    <version>1.0.4.1</version>
+    <version>$version$</version>
     <title>Combinatorics Library for .NET Standard</title>
     <authors>Adrian Akison, EoinC</authors>
     <owners>EoinC</owners>
