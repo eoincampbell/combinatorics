@@ -22,7 +22,7 @@ namespace Combinatorics.LocalTests
         /// shuffle a deck of cards is 52! or approximately 8.1E67.
         /// </summary>
         [TestMethod]
-        public void Generate_Permutations_Without_Repetition_On_3_Unique_Input_Items_Should_Create_12_Output_Permutations()
+        public void Generate_Permutations_Without_Repetition_On_3_Unique_Input_Items_Should_Create_6_Output_Permutations()
         {
             var integers = new List<int> { 1, 2, 3 };
 
@@ -33,7 +33,12 @@ namespace Combinatorics.LocalTests
                 System.Diagnostics.Debug.WriteLine(string.Join(",", v));
             }
 
-            Assert.AreEqual(6, p.Count); 
+            Assert.AreEqual(6, p.Count);
+
+            //verify the resulting data points are exactly what we expect
+            var listOfResults = p.ToList().Select(item => String.Join(",", item)).ToList();
+            listOfResults.Sort();
+            Assert.AreEqual(String.Join(";", listOfResults), "1,2,3;1,3,2;2,1,3;2,3,1;3,1,2;3,2,1");
         }
 
         /// <summary>
