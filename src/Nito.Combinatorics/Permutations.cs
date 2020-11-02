@@ -1,11 +1,9 @@
-// Copyright 2008 Adrian Akison
-// Distributed under license terms of CPOL http://www.codeproject.com/info/cpol10.aspx
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Combinatorics.Collections {
+namespace Nito.Combinatorics
+{
     /// <summary>
     /// Permutations defines a meta-collection, typically a list of lists, of all
     /// possible orderings of a set of values.  This list is enumerable and allows
@@ -106,7 +104,7 @@ namespace Combinatorics.Collections {
         /// </summary>
         public class Enumerator : IEnumerator<IList<T>>
         {
-            
+
             #region Constructors
 
             /// <summary>
@@ -154,11 +152,11 @@ namespace Combinatorics.Collections {
                         _myPosition = Position.InSet;
                         break;
                     case Position.InSet:
-                        if(MyValues.Count < 2)
+                        if (MyValues.Count < 2)
                         {
                             _myPosition = Position.AfterLast;
                         }
-                        else if(!NextPermutation())
+                        else if (!NextPermutation())
                         {
                             _myPosition = Position.AfterLast;
                         }
@@ -178,7 +176,7 @@ namespace Combinatorics.Collections {
             {
                 get
                 {
-                    if(_myPosition == Position.InSet)
+                    if (_myPosition == Position.InSet)
                     {
                         return new List<T>(MyValues);
                     }
@@ -193,7 +191,7 @@ namespace Combinatorics.Collections {
             {
                 get
                 {
-                    if(_myPosition == Position.InSet)
+                    if (_myPosition == Position.InSet)
                     {
                         return new List<T>(MyValues);
                     }
@@ -231,7 +229,7 @@ namespace Combinatorics.Collections {
                 while (_myLexicographicalOrders[i - 1] >= _myLexicographicalOrders[i])
                 {
                     --i;
-                    if(i == 0)
+                    if (i == 0)
                     {
                         return false;
                     }
@@ -384,29 +382,29 @@ namespace Combinatorics.Collections {
             _myLexicographicOrders = new int[values.Count];
 
             if (type == GenerateOption.WithRepetition)
-            { 
-                for(var i = 0; i < _myLexicographicOrders.Length; ++i)
+            {
+                for (var i = 0; i < _myLexicographicOrders.Length; ++i)
                 {
                     _myLexicographicOrders[i] = i;
                 }
             }
             else
             {
-                if(comparer == null)
+                if (comparer == null)
                 {
                     comparer = new SelfComparer<T>();
                 }
 
                 _myValues.Sort(comparer);
                 var j = 1;
-                if(_myLexicographicOrders.Length > 0)
+                if (_myLexicographicOrders.Length > 0)
                 {
                     _myLexicographicOrders[0] = j;
                 }
 
-                for(var i = 1; i < _myLexicographicOrders.Length; ++i)
+                for (var i = 1; i < _myLexicographicOrders.Length; ++i)
                 {
-                    if(comparer.Compare(_myValues[i - 1], _myValues[i]) != 0)
+                    if (comparer.Compare(_myValues[i - 1], _myValues[i]) != 0)
                     {
                         ++j;
                     }
@@ -433,13 +431,13 @@ namespace Combinatorics.Collections {
             {
                 numerators.AddRange(SmallPrimeUtility.Factor(i + 1));
 
-                if(_myLexicographicOrders[i] == _myLexicographicOrders[i - 1])
+                if (_myLexicographicOrders[i] == _myLexicographicOrders[i - 1])
                 {
                     ++runCount;
                 }
                 else
                 {
-                    for(var f = 2; f <= runCount; ++f)
+                    for (var f = 2; f <= runCount; ++f)
                     {
                         divisors.AddRange(SmallPrimeUtility.Factor(f));
                     }
@@ -447,7 +445,7 @@ namespace Combinatorics.Collections {
                 }
             }
 
-            for(var f = 2; f <= runCount; ++f)
+            for (var f = 2; f <= runCount; ++f)
             {
                 divisors.AddRange(SmallPrimeUtility.Factor(f));
             }
@@ -472,7 +470,7 @@ namespace Combinatorics.Collections {
         /// comparing T each time, much faster to let the CLR optimize around integers.
         /// </summary>
         private int[] _myLexicographicOrders;
-        
+
         /// <summary>
         /// Inner class that wraps an IComparer around a type T when it is IComparable
         /// </summary>

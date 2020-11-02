@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Combinatorics.Collections;
+﻿using System.Collections.Generic;
+using Nito.Combinatorics;
 using Xunit;
 
-namespace Combinatorics.LocalTests
+namespace UnitTests
 {
     /// <summary>
     /// Tests Cases &amp; Examples for Combinations, Permutations &amp; Variations with & without repetition in the output sets.
