@@ -1,11 +1,9 @@
-// Copyright 2008 Adrian Akison
-// Distributed under license terms of CPOL http://www.codeproject.com/info/cpol10.aspx
-
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
-namespace Combinatorics.Collections {
+namespace Nito.Combinatorics
+{
     /// <summary>
     /// Utility class that maintains a small table of prime numbers and provides
     /// simple implementations of Prime Factorization algorithms.  
@@ -14,11 +12,13 @@ namespace Combinatorics.Collections {
     /// The prime table contains all primes up to Sqrt(2^31) which are all of the primes
     /// requires to factorize any Int32 positive integer.
     /// </summary>
-    public class SmallPrimeUtility {
+    public class SmallPrimeUtility
+    {
         /// <summary>
         /// Utility class, no instances allowed.
         /// </summary>
-        private SmallPrimeUtility() {
+        private SmallPrimeUtility()
+        {
             ;
         }
 
@@ -37,7 +37,7 @@ namespace Combinatorics.Collections {
 
             while (i > 1)
             {
-                if(i % prime == 0)
+                if (i % prime == 0)
                 {
                     factors.Add(prime);
                     i /= prime;
@@ -62,7 +62,7 @@ namespace Combinatorics.Collections {
         public static List<int> MultiplyPrimeFactors(IList<int> lhs, IList<int> rhs)
         {
             var product = lhs.Concat(rhs).ToList();
-            
+
             product.Sort();
 
             return product;
@@ -82,8 +82,8 @@ namespace Combinatorics.Collections {
         public static List<int> DividePrimeFactors(IList<int> numerator, IList<int> denominator)
         {
             var product = numerator.ToList();
-            foreach(var prime in denominator)
-            { 
+            foreach (var prime in denominator)
+            {
                 product.Remove(prime);
             }
             return product;
@@ -96,7 +96,7 @@ namespace Combinatorics.Collections {
         /// <returns>Standard long representation.</returns>
         public static long EvaluatePrimeFactors(IList<int> value)
         {
-            return value.Aggregate<int, long>(1, (current, prime) => current*prime);
+            return value.Aggregate<int, long>(1, (current, prime) => current * prime);
         }
 
         /// <summary>
@@ -117,21 +117,21 @@ namespace Combinatorics.Collections {
         {
             // Build Sieve Of Eratosthenes
             var sieve = new BitArray(65536, true);
-            for(var possiblePrime = 2; possiblePrime <= 256; ++possiblePrime)
+            for (var possiblePrime = 2; possiblePrime <= 256; ++possiblePrime)
             {
                 if (!sieve[possiblePrime]) continue;
-                
+
                 // It is prime, so remove all future factors...
-                for(var nonPrime = 2 * possiblePrime; nonPrime < 65536; nonPrime += possiblePrime)
+                for (var nonPrime = 2 * possiblePrime; nonPrime < 65536; nonPrime += possiblePrime)
                 {
                     sieve[nonPrime] = false;
                 }
             }
             // Scan sieve for primes...
             _myPrimes = new List<int>();
-            for(var i = 2; i < 65536; ++i)
+            for (var i = 2; i < 65536; ++i)
             {
-                if(sieve[i])
+                if (sieve[i])
                 {
                     _myPrimes.Add(i);
                 }
