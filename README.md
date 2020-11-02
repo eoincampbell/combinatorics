@@ -9,6 +9,6 @@ However, it is under-represented in libraries since there is little application 
 Fortunately, the science behind it has been studied by mathematicians for centuries, and is well understood and well documented. 
 However, mathematicians are focused on how many elements will exist within a Combinatorics problem, and have little interest in actually going through the work of creating those lists.  Enter computer science to actually construct these massive collections."
 
-You can [install the package from Nuget](https://www.nuget.org/packages/Combinatorics/)
+You can [install the package from Nuget](https://www.nuget.org/packages/Nito.Combinatorics/)
 
 > PM> Install-Package Combinatorics
