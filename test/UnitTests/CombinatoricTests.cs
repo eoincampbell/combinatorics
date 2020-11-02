@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Combinatorics.Collections;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Combinatorics.LocalTests
 {
     /// <summary>
     /// Tests Cases &amp; Examples for Combinations, Permutations &amp; Variations with & without repetition in the output sets.
     /// </summary>
-    [TestClass]
     public class CombinatoricTests
     {
         /// <summary>
@@ -21,7 +20,7 @@ namespace Combinatorics.LocalTests
         /// Even a small n can create massive numbers of Permutations; for example, the number of ways to randomly 
         /// shuffle a deck of cards is 52! or approximately 8.1E67.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Generate_Permutations_Without_Repetition_On_3_Unique_Input_Items_Should_Create_12_Output_Permutations()
         {
             var integers = new List<int> { 1, 2, 3 };
@@ -33,7 +32,7 @@ namespace Combinatorics.LocalTests
                 System.Diagnostics.Debug.WriteLine(string.Join(",", v));
             }
 
-            Assert.AreEqual(6, p.Count); 
+            Assert.Equal(6, p.Count); 
         }
 
         /// <summary>
@@ -48,7 +47,7 @@ namespace Combinatorics.LocalTests
         /// (where Π is the product operator). All of the collating and calculating is handled for us using 
         /// the Permutation.Count property.
         /// </summary>        
-        [TestMethod]
+        [Fact]
         public void Generate_Permutations_With_Repetition_On_4_Input_Items_Including_Duplicates_Should_Create_24_Output_Permutations()
         {
             var integers = new List<int> {1, 1, 2, 3};
@@ -60,7 +59,7 @@ namespace Combinatorics.LocalTests
                 System.Diagnostics.Debug.WriteLine(string.Join(",", v));
             }
 
-            Assert.AreEqual(24, p.Count);
+            Assert.Equal(24, p.Count);
         }
 
         /// <summary>
@@ -71,7 +70,7 @@ namespace Combinatorics.LocalTests
         /// in the output set. Combinations without Repetition are would be similar to drawing balls from a lottery drum.
         /// Each ball can only be drawn once but the order they are drawn in is unimportant.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Generate_Combinations_of_3_Without_Repetition_On_6_Input_Items_Should_Create_20_Output_Items()
         {
             var integers = new List<int> {1, 2, 3, 4, 5, 6};
@@ -83,7 +82,7 @@ namespace Combinatorics.LocalTests
                 System.Diagnostics.Debug.WriteLine(string.Join(",", v));
             }
 
-            Assert.AreEqual(20, c.Count);
+            Assert.Equal(20, c.Count);
         }
 
         /// <summary>
@@ -92,7 +91,7 @@ namespace Combinatorics.LocalTests
         /// and roll the dice again. The previous result does not preclude you from getting the same result again.
         /// The order is still unimportant
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Generate_Combinations_of_2_With_Repetition_On_6_Input_Items_Should_Create_21_Output_Items()
         {
             var integers = new List<int> { 1, 2, 3, 4, 5, 6 };
@@ -104,7 +103,7 @@ namespace Combinatorics.LocalTests
                 System.Diagnostics.Debug.WriteLine(string.Join(",", v));
             }
 
-            Assert.AreEqual(21, c.Count);
+            Assert.Equal(21, c.Count);
         }
 
         /// <summary>
@@ -121,7 +120,7 @@ namespace Combinatorics.LocalTests
         /// 
         /// It can be calculated as V(n, k) = C(n, k) * P(k) = (n! / ( k! * (n - k)! )) * k! = n! / (n - k)!. 
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Generate_Variations_of_3_Without_Repetition_On_6_Input_Items_Should_Create_120_Output_Items()
         {
             var integers = new List<int> {1, 2, 3, 4, 5, 6};
@@ -133,7 +132,7 @@ namespace Combinatorics.LocalTests
                 System.Diagnostics.Debug.WriteLine(string.Join(",", vv));
             }
 
-            Assert.AreEqual(120, v.Count);
+            Assert.Equal(120, v.Count);
         }
 
         /// <summary>
@@ -146,7 +145,7 @@ namespace Combinatorics.LocalTests
         /// The first item is one of n items, the second is also one of n, and the pth is also one of n. 
         /// This gives us Vr(n, k) = n^k total variations of n items choose k.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Generate_Variations_of_3_With_Repetition_On_6_Input_Items_Should_Create_216_Output_Items()
         {
             var integers = new List<int> { 1, 2, 3, 4, 5, 6 };
@@ -158,7 +157,7 @@ namespace Combinatorics.LocalTests
                 System.Diagnostics.Debug.WriteLine(string.Join(",", vv));
             }
 
-            Assert.AreEqual(216, v.Count);
+            Assert.Equal(216, v.Count);
         }
     }
 }
