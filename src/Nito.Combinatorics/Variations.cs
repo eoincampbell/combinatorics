@@ -5,10 +5,7 @@ using System.Collections.Generic;
 namespace Nito.Combinatorics
 {
     /// <summary>
-    /// Variations defines a meta-collection, typically a list of lists, of all possible 
-    /// ordered subsets of a particular size from the set of values.  
-    /// This list is enumerable and allows the scanning of all possible Variations using a simple 
-    /// foreach() loop even though the variations are not all in memory.
+    /// Variations defines a sequence of all possible ordered subsets of a particular size from the set of values.  
     /// </summary>
     /// <remarks>
     /// The MetaCollectionType parameter of the constructor allows for the creation of
@@ -23,15 +20,8 @@ namespace Nito.Combinatorics
     /// The equality of multiple inputs is not considered when generating variations.
     /// </remarks>
     /// <typeparam name="T">The type of the values within the list.</typeparam>
-    public class Variations<T> : IMetaCollection<T>
+    public sealed class Variations<T> : IMetaCollection<T>
     {
-        #region Constructors
-
-        /// <summary>
-        /// No default constructor, must provided a list of values and size.
-        /// </summary>
-        protected Variations() { }
-
         /// <summary>
         /// Create a variation set from the indicated list of values.
         /// The upper index is calculated as values.Count, the lower index is specified.
@@ -40,8 +30,8 @@ namespace Nito.Combinatorics
         /// <param name="values">List of values to select Variations from.</param>
         /// <param name="lowerIndex">The size of each variation set to return.</param>
         public Variations(IEnumerable<T> values, int lowerIndex)
+            : this(values, lowerIndex, GenerateOption.WithoutRepetition)
         {
-            Initialize(values, lowerIndex, GenerateOption.WithoutRepetition);
         }
 
         /// <summary>
@@ -49,16 +39,12 @@ namespace Nito.Combinatorics
         /// The upper index is calculated as values.Count, the lower index is specified.
         /// </summary>
         /// <param name="values">List of values to select variations from.</param>
-        /// <param name="lowerIndex">The size of each vatiation set to return.</param>
+        /// <param name="lowerIndex">The size of each variation set to return.</param>
         /// <param name="type">Type indicates whether to use repetition in set generation.</param>
         public Variations(IEnumerable<T> values, int lowerIndex, GenerateOption type)
         {
             Initialize(values, lowerIndex, type);
         }
-
-        #endregion
-
-        #region IEnumerable Interface
 
         /// <summary>
         /// Gets an enumerator for the collection of Variations.
@@ -86,17 +72,11 @@ namespace Nito.Combinatorics
             return new EnumeratorWithoutRepetition(this);
         }
 
-        #endregion
-
-        #region Enumerator Inner Class
-
         /// <summary>
         /// An enumerator for Variations when the type is set to WithRepetition.
         /// </summary>
         public class EnumeratorWithRepetition : IEnumerator<IList<T>>
         {
-            #region Constructors
-
             /// <summary>
             /// Construct a enumerator with the parent object.
             /// </summary>
@@ -106,10 +86,6 @@ namespace Nito.Combinatorics
                 _myParent = source;
                 Reset();
             }
-
-            #endregion
-
-            #region IEnumerator interface
 
             /// <summary>
             /// Resets the Variations enumerator to the first variation.  
@@ -126,8 +102,8 @@ namespace Nito.Combinatorics
             /// <returns>True if successfully moved to next variation, False if no more variations exist.</returns>
             /// <remarks>
             /// Increments the internal myListIndexes collection by incrementing the last index
-            /// and overflow/carrying into others just like grade-school arithemtic.  If the 
-            /// finaly carry flag is set, then we would wrap around and are therefore done.
+            /// and overflow/carrying into others just like grade-school arithmetic.  If the 
+            /// final carry flag is set, then we would wrap around and are therefore done.
             /// </remarks>
             public bool MoveNext()
             {
@@ -193,10 +169,6 @@ namespace Nito.Combinatorics
 
             }
 
-            #endregion
-
-            #region Heavy Lifting Members
-
             /// <summary>
             /// Computes the current list based on the internal list index.
             /// </summary>
@@ -215,10 +187,6 @@ namespace Nito.Combinatorics
                 }
             }
 
-            #endregion
-
-            #region Data
-
             /// <summary>
             /// Parent object this is an enumerator for.
             /// </summary>
@@ -230,11 +198,9 @@ namespace Nito.Combinatorics
             private List<T> _myCurrentList;
 
             /// <summary>
-            /// An enumertor of the parents list of lexicographic orderings.
+            /// An enumerator of the parents list of lexicographic orderings.
             /// </summary>
             private List<int> _myListIndexes;
-
-            #endregion
         }
 
         /// <summary>
@@ -242,9 +208,6 @@ namespace Nito.Combinatorics
         /// </summary>
         public class EnumeratorWithoutRepetition : IEnumerator<IList<T>>
         {
-
-            #region Constructors
-
             /// <summary>
             /// Construct a enumerator with the parent object.
             /// </summary>
@@ -254,10 +217,6 @@ namespace Nito.Combinatorics
                 _myParent = source;
                 _myPermutationsEnumerator = (Permutations<int>.Enumerator)_myParent._myPermutations.GetEnumerator();
             }
-
-            #endregion
-
-            #region IEnumerator interface
 
             /// <summary>
             /// Resets the Variations enumerator to the first variation.  
@@ -310,10 +269,6 @@ namespace Nito.Combinatorics
 
             }
 
-            #endregion
-
-            #region Heavy Lifting Members
-
             /// <summary>
             /// Creates a list of original values from the int permutation provided.  
             /// The exception for accessing current (InvalidOperationException) is generated
@@ -362,10 +317,6 @@ namespace Nito.Combinatorics
                 }
             }
 
-            #endregion
-
-            #region Data
-
             /// <summary>
             /// Parent object this is an enumerator for.
             /// </summary>
@@ -377,15 +328,10 @@ namespace Nito.Combinatorics
             private List<T> _myCurrentList;
 
             /// <summary>
-            /// An enumertor of the parents list of lexicographic orderings.
+            /// An enumerator of the parents list of lexicographic orderings.
             /// </summary>
             private readonly Permutations<int>.Enumerator _myPermutationsEnumerator;
-
-            #endregion
         }
-        #endregion
-
-        #region IMetaList Interface
 
         /// <summary>
         /// The number of unique variations that are defined in this meta-collection.
@@ -421,10 +367,6 @@ namespace Nito.Combinatorics
         /// </summary>
         public int LowerIndex { get; private set; }
 
-        #endregion
-
-        #region Heavy Lifting Members
-
         /// <summary>
         /// Initialize the variations for constructors.
         /// </summary>
@@ -453,12 +395,8 @@ namespace Nito.Combinatorics
             _myPermutations = new Permutations<int>(myMap);
         }
 
-        #endregion
-
-        #region Data
-
         /// <summary>
-        /// Copy of values object is intialized with, required for enumerator reset.
+        /// Copy of values object is initialized with, required for enumerator reset.
         /// </summary>
         private List<T> _myValues;
 
@@ -466,7 +404,5 @@ namespace Nito.Combinatorics
         /// Permutations object that handles permutations on int for variation inclusion and ordering.
         /// </summary>
         private Permutations<int> _myPermutations;
-
-        #endregion
     }
 }

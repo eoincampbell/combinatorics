@@ -1,19 +1,18 @@
 namespace Nito.Combinatorics
 {
     /// <summary>
-    /// Indicates whether a Permutation, Combination or Variation meta-collections
-    /// generate repetition sets.  
+    /// Indicates whether a permutation, combination or variation generates equivalent result sets.  
     /// </summary>
     public enum GenerateOption
     {
         /// <summary>
-        /// Do not generate additional sets, typical implementation.
+        /// Do not generate equivalent result sets.
         /// </summary>
         WithoutRepetition,
 
         /// <summary>
-        /// Generate additional sets even if repetition is required.
+        /// Generate equivalent result sets.
         /// </summary>
-        WithRepetition
+        WithRepetition,
     }
 }

@@ -5,12 +5,7 @@ using System.Collections.Generic;
 namespace Nito.Combinatorics
 {
     /// <summary>
-    /// Permutations defines a meta-collection, typically a list of lists, of all
-    /// possible orderings of a set of values.  This list is enumerable and allows
-    /// the scanning of all possible permutations using a simple foreach() loop.
-    /// The MetaCollectionType parameter of the constructor allows for the creation of
-    /// two types of sets,  those with and without repetition in the output set when 
-    /// presented with repetition in the input set.
+    /// Permutations defines a sequence of all possible orderings of a set of values.
     /// </summary>
     /// <remarks>
     /// When given a input collect {A A B}, the following sets are generated:
@@ -23,42 +18,34 @@ namespace Nito.Combinatorics
     /// ordering of the lists based on the provided Comparer.  
     /// If no comparer is provided, then T must be IComparable on T.
     /// 
-    /// When generating repetition sets, no comparisions are performed and therefore
+    /// When generating repetition sets, no comparisons are performed and therefore
     /// no comparer is required and T does not need to be IComparable.
     /// </remarks>
     /// <typeparam name="T">The type of the values within the list.</typeparam>
-    public class Permutations<T> : IMetaCollection<T>
+    public sealed class Permutations<T> : IMetaCollection<T>
     {
-
-        #region Constructors
-
-        /// <summary>
-        /// No default constructor, must at least provided a list of values.
-        /// </summary>
-        protected Permutations() { }
-
         /// <summary>
         /// Create a permutation set from the provided list of values.  
         /// The values (T) must implement IComparable.  
-        /// If T does not implement IComparable use a constructor with an explict IComparer.
+        /// If T does not implement IComparable use a constructor with an explicit IComparer.
         /// The repetition type defaults to MetaCollectionType.WithholdRepetitionSets
         /// </summary>
         /// <param name="values">List of values to permute.</param>
         public Permutations(ICollection<T> values)
+            : this(values, GenerateOption.WithoutRepetition, null)
         {
-            Initialize(values, GenerateOption.WithoutRepetition, null);
         }
 
         /// <summary>
         /// Create a permutation set from the provided list of values.  
         /// If type is MetaCollectionType.WithholdRepetitionSets, then values (T) must implement IComparable.  
-        /// If T does not implement IComparable use a constructor with an explict IComparer.
+        /// If T does not implement IComparable use a constructor with an explicit IComparer.
         /// </summary>
         /// <param name="values">List of values to permute.</param>
         /// <param name="type">The type of permutation set to calculate.</param>
         public Permutations(ICollection<T> values, GenerateOption type)
+            : this(values, type, null)
         {
-            Initialize(values, type, null);
         }
 
         /// <summary>
@@ -67,21 +54,29 @@ namespace Nito.Combinatorics
         /// The repetition type defaults to MetaCollectionType.WithholdRepetitionSets
         /// </summary>
         /// <param name="values">List of values to permute.</param>
-        /// <param name="comparer">Comparer used for defining the lexigraphic order.</param>
-        public Permutations(IList<T> values, IComparer<T> comparer)
+        /// <param name="comparer">Comparer used for defining the lexicographic order.</param>
+        public Permutations(ICollection<T> values, IComparer<T> comparer)
+            : this(values, GenerateOption.WithoutRepetition, comparer)
         {
-            Initialize(values, GenerateOption.WithoutRepetition, comparer);
         }
 
-        #endregion
-
-        #region IEnumerable Interface
+        /// <summary>
+        /// Create a permutation set from the provided list of values.  
+        /// If type is MetaCollectionType.WithholdRepetitionSets, then the values will be compared using the supplied IComparer.
+        /// </summary>
+        /// <param name="values">List of values to permute.</param>
+        /// <param name="type">The type of permutation set to calculate.</param>
+        /// <param name="comparer">Comparer used for defining the lexicographic order.</param>
+        public Permutations(ICollection<T> values, GenerateOption type, IComparer<T> comparer)
+        {
+            Initialize(values, type, comparer);
+        }
 
         /// <summary>
         /// Gets an enumerator for collecting the list of permutations.
         /// </summary>
         /// <returns>The enumerator.</returns>
-        public virtual IEnumerator<IList<T>> GetEnumerator()
+        public IEnumerator<IList<T>> GetEnumerator()
         {
             return new Enumerator(this);
         }
@@ -95,18 +90,11 @@ namespace Nito.Combinatorics
             return new Enumerator(this);
         }
 
-        #endregion
-
-        #region Enumerator Inner-Class
-
         /// <summary>
         /// The enumerator that enumerates each meta-collection of the enclosing Permutations class.
         /// </summary>
         public class Enumerator : IEnumerator<IList<T>>
         {
-
-            #region Constructors
-
             /// <summary>
             /// Construct a enumerator with the parent object.
             /// </summary>
@@ -118,10 +106,6 @@ namespace Nito.Combinatorics
                 source._myLexicographicOrders.CopyTo(_myLexicographicalOrders, 0);
                 Reset();
             }
-
-            #endregion
-
-            #region IEnumerator Interface
 
             /// <summary>
             /// Resets the permutations enumerator to the first permutation.  
@@ -206,10 +190,6 @@ namespace Nito.Combinatorics
             {
             }
 
-            #endregion
-
-            #region Heavy Lifting Methods
-
             /// <summary>
             /// Calculates the next lexicographical permutation of the set.
             /// This is a permutation with repetition where values that compare as equal will not 
@@ -271,9 +251,6 @@ namespace Nito.Combinatorics
                 _myLexicographicalOrders[j] = _myKviTemp;
             }
 
-            #endregion
-
-            #region Data and Internal Members
             /// <summary>
             /// Single instance of swap variable for T, small performance improvement over declaring in Swap function scope.
             /// </summary>
@@ -290,7 +267,7 @@ namespace Nito.Combinatorics
             private Position _myPosition = Position.BeforeFirst;
 
             /// <summary>
-            /// Parrellel array of integers that represent the location of items in the myValues array.
+            /// Parallel array of integers that represent the location of items in the myValues array.
             /// This is generated at Initialization and is used as a performance speed up rather that
             /// comparing T each time, much faster to let the CLR optimize around integers.
             /// </summary>
@@ -302,12 +279,12 @@ namespace Nito.Combinatorics
             public List<T> MyValues;
 
             /// <summary>
-            /// The set of permuations that this enumerator enumerates.
+            /// The set of permutations that this enumerator enumerates.
             /// </summary>
             private readonly Permutations<T> _myParent;
 
             /// <summary>
-            /// Internal position type for tracking enumertor position.
+            /// Internal position type for tracking enumerator position.
             /// </summary>
             private enum Position
             {
@@ -315,14 +292,7 @@ namespace Nito.Combinatorics
                 InSet,
                 AfterLast
             }
-
-            #endregion
-
         }
-
-        #endregion
-
-        #region IMetaList Interface
 
         /// <summary>
         /// The count of all permutations that will be returned.
@@ -348,15 +318,11 @@ namespace Nito.Combinatorics
         /// </summary>
         public int LowerIndex => _myValues.Count;
 
-        #endregion
-
-        #region Heavy Lifting Members
-
         /// <summary>
-        /// Common intializer used by the multiple flavors of constructors.
+        /// Common initializer used by the multiple flavors of constructors.
         /// </summary>
         /// <remarks>
-        /// Copies information provided and then creates a parellel int array of lexicographic
+        /// Copies information provided and then creates a parallel int array of lexicographic
         /// orders that will be used for the actual permutation algorithm.  
         /// The input array is first sorted as required for WithoutRepetition and always just for consistency.
         /// This array is constructed one of two way depending on the type of the collection.
@@ -365,14 +331,14 @@ namespace Nito.Combinatorics
         /// and the lexicographic orders are simply generated as 1, 2, ... N.  
         /// E.g.
         /// Input array:          {A A B C D E E}
-        /// Lexicograhpic Orders: {1 2 3 4 5 6 7}
+        /// Lexicographic Orders: {1 2 3 4 5 6 7}
         /// 
         /// When type is MetaCollectionType.WithoutRepetition, then fewer are generated, with each
         /// identical element in the input array not repeated.  The lexicographic sort algorithm
         /// handles this natively as long as the repetition is repeated.
         /// E.g.
         /// Input array:          {A A B C D E E}
-        /// Lexicograhpic Orders: {1 1 2 3 4 5 5}
+        /// Lexicographic Orders: {1 1 2 3 4 5 5}
         /// </remarks>
         private void Initialize(ICollection<T> values, GenerateOption type, IComparer<T> comparer)
         {
@@ -455,17 +421,13 @@ namespace Nito.Combinatorics
             );
         }
 
-        #endregion
-
-        #region Data and Internal Members
-
         /// <summary>
         /// A list of T that represents the order of elements as originally provided, used for Reset.
         /// </summary>
         private List<T> _myValues;
 
         /// <summary>
-        /// Parrellel array of integers that represent the location of items in the myValues array.
+        /// Parallel array of integers that represent the location of items in the myValues array.
         /// This is generated at Initialization and is used as a performance speed up rather that
         /// comparing T each time, much faster to let the CLR optimize around integers.
         /// </summary>
@@ -492,11 +454,8 @@ namespace Nito.Combinatorics
         private long _myCount;
 
         /// <summary>
-        /// The type of Permutations that this was intialized from.
+        /// The type of Permutations that this was initialized from.
         /// </summary>
         private GenerateOption _myMetaCollectionType;
-
-        #endregion
-
     }
 }

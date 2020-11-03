@@ -12,16 +12,8 @@ namespace Nito.Combinatorics
     /// The prime table contains all primes up to Sqrt(2^31) which are all of the primes
     /// requires to factorize any Int32 positive integer.
     /// </summary>
-    public class SmallPrimeUtility
+    public static class SmallPrimeUtility
     {
-        /// <summary>
-        /// Utility class, no instances allowed.
-        /// </summary>
-        private SmallPrimeUtility()
-        {
-            ;
-        }
-
         /// <summary>
         /// Performs a prime factorization of a given integer using the table of primes in PrimeTable.
         /// Since this will only factor Int32 sized integers, a simple list of factors is returned instead
@@ -145,6 +137,5 @@ namespace Nito.Combinatorics
         public static IList<int> PrimeTable => _myPrimes;
 
         private static List<int> _myPrimes = new List<int>();
-
     }
 }

@@ -5,12 +5,11 @@ using System.Linq;
 namespace Nito.Combinatorics
 {
     /// <summary>
-    /// Combinations defines a meta-collection, typically a list of lists, of all possible 
-    /// subsets of a particular size from the set of values.  This list is enumerable and 
-    /// allows the scanning of all possible combinations using a simple foreach() loop.
-    /// Within the returned set, there is no prescribed order.  This follows the mathematical
-    /// concept of choose.  For example, put 10 dominoes in a hat and pick 5.  The number of possible
-    /// combinations is defined as "10 choose 5", which is calculated as (10!) / ((10 - 5)! * 5!).
+    /// Combinations defines a sequence of all possible subsets of a particular size from the set of values.
+    /// Within the returned set, there is no prescribed order.
+    /// This follows the mathematical concept of choose.
+    /// For example, put <c>10</c> dominoes in a hat and pick <c>5</c>.
+    /// The number of possible combinations is defined as "10 choose 5", which is calculated as <c>(10!) / ((10 - 5)! * 5!)</c>.
     /// </summary>
     /// <remarks>
     /// The MetaCollectionType parameter of the constructor allows for the creation of
@@ -23,20 +22,13 @@ namespace Nito.Combinatorics
     /// MetaCollectionType.WithoutRepetition =>
     /// {A B}, {A C}, {B C}
     /// 
-    /// Input sets with multiple equal values will generate redundant combinations in proprotion
-    /// to the likelyhood of outcome.  For example, {A A B B} and a lower index of 3 will generate:
+    /// Input sets with multiple equal values will generate redundant combinations in proportion
+    /// to the likelihood of outcome.  For example, {A A B B} and a lower index of 3 will generate:
     /// {A A B} {A A B} {A B B} {A B B}
     /// </remarks>
     /// <typeparam name="T">The type of the values within the list.</typeparam>
-    public class Combinations<T> : IMetaCollection<T>
+    public sealed class Combinations<T> : IMetaCollection<T>
     {
-        #region Constructors
-
-        /// <summary>
-        /// No default constructor, must provided a list of values and size.
-        /// </summary>
-        protected Combinations() { }
-
         /// <summary>
         /// Create a combination set from the provided list of values.
         /// The upper index is calculated as values.Count, the lower index is specified.
@@ -45,6 +37,7 @@ namespace Nito.Combinatorics
         /// <param name="values">List of values to select combinations from.</param>
         /// <param name="lowerIndex">The size of each combination set to return.</param>
         public Combinations(IList<T> values, int lowerIndex)
+            : this(values, lowerIndex, GenerateOption.WithoutRepetition)
         {
             Initialize(values, lowerIndex, GenerateOption.WithoutRepetition);
         }
@@ -60,10 +53,6 @@ namespace Nito.Combinatorics
         {
             Initialize(values, lowerIndex, type);
         }
-
-        #endregion
-
-        #region IEnumerable Interface
 
         /// <summary>
         /// Gets an enumerator for collecting the list of combinations.
@@ -83,18 +72,11 @@ namespace Nito.Combinatorics
             return new Enumerator(this);
         }
 
-        #endregion
-
-        #region Enumerator Inner Class
-
         /// <summary>
         /// The enumerator that enumerates each meta-collection of the enclosing Combinations class.
         /// </summary>
         public class Enumerator : IEnumerator<IList<T>>
         {
-
-            #region Constructors
-
             /// <summary>
             /// Construct a enumerator with the parent object.
             /// </summary>
@@ -105,9 +87,6 @@ namespace Nito.Combinatorics
                 _myPermutationsEnumerator = (Permutations<bool>.Enumerator)_myParent._myPermutations.GetEnumerator();
             }
 
-            #endregion
-
-            #region IEnumerator interface
             /// <summary>
             /// Resets the combinations enumerator to the first combination.  
             /// </summary>
@@ -163,10 +142,6 @@ namespace Nito.Combinatorics
 
             }
 
-            #endregion
-
-            #region Heavy Lifting Members
-
             /// <summary>
             /// The only complex function of this entire wrapper, ComputeCurrent() creates
             /// a list of original values from the bool permutation provided.  
@@ -220,10 +195,6 @@ namespace Nito.Combinatorics
                 }
             }
 
-            #endregion
-
-            #region Data
-
             /// <summary>
             /// Parent object this is an enumerator for.
             /// </summary>
@@ -238,12 +209,7 @@ namespace Nito.Combinatorics
             /// An enumertor of the parents list of lexicographic orderings.
             /// </summary>
             private Permutations<bool>.Enumerator _myPermutationsEnumerator;
-
-            #endregion
         }
-        #endregion
-
-        #region IMetaList Interface
 
         /// <summary>
         /// The number of unique combinations that are defined in this meta-collection.
@@ -272,10 +238,6 @@ namespace Nito.Combinatorics
                 return _myLowerIndex;
             }
         }
-
-        #endregion
-
-        #region Heavy Lifting Members
 
         /// <summary>
         /// Initialize the combinations by settings a copy of the values from the 
@@ -325,10 +287,6 @@ namespace Nito.Combinatorics
             _myPermutations = new Permutations<bool>(myMap);
         }
 
-        #endregion
-
-        #region Data
-
         /// <summary>
         /// Copy of values object is intialized with, required for enumerator reset.
         /// </summary>
@@ -348,7 +306,5 @@ namespace Nito.Combinatorics
         /// The lower index defined in the constructor.
         /// </summary>
         private int _myLowerIndex;
-
-        #endregion
     }
 }
