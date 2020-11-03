@@ -209,9 +209,8 @@ namespace Nito.Combinatorics
                 get
                 {
                     if (_myPosition == Position.InSet)
-                    {
                         return new List<T>(_myValues);
-                    }
+
                     throw new InvalidOperationException();
                 }
             }
@@ -354,12 +353,12 @@ namespace Nito.Combinatorics
         private BigInteger GetCount()
         {
             var runCount = 1;
-            var divisors = new List<int>();
-            var numerators = new List<int>();
+            var divisors = Enumerable.Empty<int>();
+            var numerators = Enumerable.Empty<int>();
 
             for (var i = 1; i < _myLexicographicOrders.Length; ++i)
             {
-                numerators.AddRange(SmallPrimeUtility.Factor(i + 1));
+                numerators = numerators.Concat(SmallPrimeUtility.Factor(i + 1));
 
                 if (_myLexicographicOrders[i] == _myLexicographicOrders[i - 1])
                 {
@@ -368,17 +367,14 @@ namespace Nito.Combinatorics
                 else
                 {
                     for (var f = 2; f <= runCount; ++f)
-                    {
-                        divisors.AddRange(SmallPrimeUtility.Factor(f));
-                    }
+                        divisors = divisors.Concat(SmallPrimeUtility.Factor(f));
+
                     runCount = 1;
                 }
             }
 
             for (var f = 2; f <= runCount; ++f)
-            {
-                divisors.AddRange(SmallPrimeUtility.Factor(f));
-            }
+                divisors = divisors.Concat(SmallPrimeUtility.Factor(f));
 
             return SmallPrimeUtility.EvaluatePrimeFactors(
                 SmallPrimeUtility.DividePrimeFactors(numerators, divisors)

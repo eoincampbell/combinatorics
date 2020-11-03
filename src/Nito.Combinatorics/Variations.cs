@@ -54,12 +54,10 @@ namespace Nito.Combinatorics
                 return;
             }
 
-            var myMap = new List<int>();
+            var myMap = new List<int>(_myValues.Count);
             var index = 0;
             for (var i = 0; i < _myValues.Count; ++i)
-            {
                 myMap.Add(i >= _myValues.Count - LowerIndex ? index++ : int.MaxValue);
-            }
 
             _myPermutations = new Permutations<int>(myMap);
         }
@@ -68,14 +66,10 @@ namespace Nito.Combinatorics
         /// Gets an enumerator for the collection of Variations.
         /// </summary>
         /// <returns>The enumerator.</returns>
-        public IEnumerator<IReadOnlyList<T>> GetEnumerator()
-        {
-            if (Type == GenerateOption.WithRepetition)
-            {
-                return new EnumeratorWithRepetition(this);
-            }
-            return new EnumeratorWithoutRepetition(this);
-        }
+        public IEnumerator<IReadOnlyList<T>> GetEnumerator() =>
+            Type == GenerateOption.WithRepetition ?
+                (IEnumerator<IReadOnlyList<T>>) new EnumeratorWithRepetition(this) :
+                new EnumeratorWithoutRepetition(this);
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
@@ -117,7 +111,7 @@ namespace Nito.Combinatorics
                 var carry = 1;
                 if (_myListIndexes == null)
                 {
-                    _myListIndexes = new List<int>();
+                    _myListIndexes = new List<int>(_myParent.LowerIndex);
                     for (var i = 0; i < _myParent.LowerIndex; ++i)
                     {
                         _myListIndexes.Add(0);
@@ -175,11 +169,9 @@ namespace Nito.Combinatorics
 
                 _ = _myListIndexes ?? throw new InvalidOperationException($"Cannot call {nameof(Current)} before calling {nameof(MoveNext)}.");
 
-                _myCurrentList = new List<T>();
+                _myCurrentList = new List<T>(_myListIndexes.Count);
                 foreach (var index in _myListIndexes)
-                {
                     _myCurrentList.Add(_myParent._myValues[index]);
-                }
             }
 
             /// <summary>
@@ -271,7 +263,7 @@ namespace Nito.Combinatorics
                     return;
                 }
 
-                _myCurrentList = new List<T>();
+                _myCurrentList = new List<T>(_myParent.LowerIndex);
                 var index = 0;
                 var currentPermutation = _myPermutationsEnumerator.Current;
 
@@ -320,17 +312,7 @@ namespace Nito.Combinatorics
         /// Variations with repetitions does not behave like other meta-collections and it's
         /// count is equal to N^P, where N is the upper index and P is the lower index.
         /// </remarks>
-        public BigInteger Count
-        {
-            get
-            {
-                if (Type == GenerateOption.WithoutRepetition)
-                {
-                    return _myPermutations!.Count;
-                }
-                return BigInteger.Pow(UpperIndex, LowerIndex);
-            }
-        }
+        public BigInteger Count => Type == GenerateOption.WithoutRepetition ? _myPermutations!.Count : BigInteger.Pow(UpperIndex, LowerIndex);
 
         /// <summary>
         /// The type of Variations set that is generated.
