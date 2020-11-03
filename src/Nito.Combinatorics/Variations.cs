@@ -162,7 +162,7 @@ namespace Nito.Combinatorics
                 get
                 {
                     ComputeCurrent();
-                    return _myCurrentList;
+                    return _myCurrentList!;
                 }
             }
 
@@ -174,7 +174,7 @@ namespace Nito.Combinatorics
                 get
                 {
                     ComputeCurrent();
-                    return _myCurrentList;
+                    return _myCurrentList!;
                 }
             }
 
@@ -196,8 +196,9 @@ namespace Nito.Combinatorics
                     return;
                 }
 
-                _myCurrentList = new List<T>();
+                _ = _myListIndexes ?? throw new InvalidOperationException($"Cannot call {nameof(Current)} before calling {nameof(MoveNext)}.");
 
+                _myCurrentList = new List<T>();
                 foreach (var index in _myListIndexes)
                 {
                     _myCurrentList.Add(_myParent._myValues[index]);
@@ -212,12 +213,12 @@ namespace Nito.Combinatorics
             /// <summary>
             /// The current list of values, this is lazy evaluated by the Current property.
             /// </summary>
-            private List<T> _myCurrentList;
+            private List<T>? _myCurrentList;
 
             /// <summary>
             /// An enumerator of the parents list of lexicographic orderings.
             /// </summary>
-            private List<int> _myListIndexes;
+            private List<int>? _myListIndexes;
         }
 
         /// <summary>
@@ -232,7 +233,7 @@ namespace Nito.Combinatorics
             public EnumeratorWithoutRepetition(Variations<T> source)
             {
                 _myParent = source;
-                _myPermutationsEnumerator = (Permutations<int>.Enumerator)_myParent._myPermutations.GetEnumerator();
+                _myPermutationsEnumerator = (Permutations<int>.Enumerator)_myParent._myPermutations!.GetEnumerator();
             }
 
             /// <summary>
@@ -262,7 +263,7 @@ namespace Nito.Combinatorics
                 get
                 {
                     ComputeCurrent();
-                    return _myCurrentList;
+                    return _myCurrentList!;
                 }
             }
 
@@ -274,7 +275,7 @@ namespace Nito.Combinatorics
                 get
                 {
                     ComputeCurrent();
-                    return _myCurrentList;
+                    return _myCurrentList!;
                 }
             }
 
@@ -339,7 +340,7 @@ namespace Nito.Combinatorics
             /// <summary>
             /// The current list of values, this is lazy evaluated by the Current property.
             /// </summary>
-            private List<T> _myCurrentList;
+            private List<T>? _myCurrentList;
 
             /// <summary>
             /// An enumerator of the parents list of lexicographic orderings.
@@ -360,7 +361,7 @@ namespace Nito.Combinatorics
             {
                 if (Type == GenerateOption.WithoutRepetition)
                 {
-                    return _myPermutations.Count;
+                    return _myPermutations!.Count;
                 }
                 return (long)Math.Pow(UpperIndex, LowerIndex);
             }
@@ -384,11 +385,11 @@ namespace Nito.Combinatorics
         /// <summary>
         /// Copy of values object is initialized with, required for enumerator reset.
         /// </summary>
-        private List<T> _myValues;
+        private readonly List<T> _myValues;
 
         /// <summary>
         /// Permutations object that handles permutations on int for variation inclusion and ordering.
         /// </summary>
-        private Permutations<int> _myPermutations;
+        private readonly Permutations<int>? _myPermutations;
     }
 }

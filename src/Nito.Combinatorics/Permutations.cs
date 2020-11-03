@@ -55,7 +55,7 @@ namespace Nito.Combinatorics
         /// </summary>
         /// <param name="values">List of values to permute.</param>
         /// <param name="comparer">Comparer used for defining the lexicographic order.</param>
-        public Permutations(ICollection<T> values, IComparer<T> comparer)
+        public Permutations(ICollection<T> values, IComparer<T>? comparer)
             : this(values, GenerateOption.WithoutRepetition, comparer)
         {
         }
@@ -67,7 +67,7 @@ namespace Nito.Combinatorics
         /// <param name="values">List of values to permute.</param>
         /// <param name="type">The type of permutation set to calculate.</param>
         /// <param name="comparer">Comparer used for defining the lexicographic order.</param>
-        public Permutations(ICollection<T> values, GenerateOption type, IComparer<T> comparer)
+        public Permutations(ICollection<T> values, GenerateOption type, IComparer<T>? comparer)
         {
             _ = values ?? throw new ArgumentNullException(nameof(values));
 
@@ -158,6 +158,7 @@ namespace Nito.Combinatorics
                 _ = source ?? throw new ArgumentNullException(nameof(source));
                 _myParent = source;
                 _myLexicographicalOrders = new int[source._myLexicographicOrders.Length];
+                _myValues = new List<T>(source._myValues.Count);
                 source._myLexicographicOrders.CopyTo(_myLexicographicalOrders, 0);
                 Reset();
             }
@@ -185,7 +186,6 @@ namespace Nito.Combinatorics
                 switch (_myPosition)
                 {
                     case Position.BeforeFirst:
-                        _myValues = new List<T>(_myParent._myValues.Count);
                         _myValues.AddRange(_myParent._myValues);
                         Array.Sort(_myLexicographicalOrders);
                         _myPosition = Position.InSet;
@@ -298,18 +298,13 @@ namespace Nito.Combinatorics
             /// </summary>
             private void Swap(int i, int j)
             {
-                _myTemp = _myValues[i];
+                var temp = _myValues[i];
                 _myValues[i] = _myValues[j];
-                _myValues[j] = _myTemp;
+                _myValues[j] = temp;
                 _myKviTemp = _myLexicographicalOrders[i];
                 _myLexicographicalOrders[i] = _myLexicographicalOrders[j];
                 _myLexicographicalOrders[j] = _myKviTemp;
             }
-
-            /// <summary>
-            /// Single instance of swap variable for T, small performance improvement over declaring in Swap function scope.
-            /// </summary>
-            private T _myTemp;
 
             /// <summary>
             /// Single instance of swap variable for int, small performance improvement over declaring in Swap function scope.
