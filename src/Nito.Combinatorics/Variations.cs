@@ -67,7 +67,7 @@ namespace Nito.Combinatorics
         /// Gets an enumerator for the collection of Variations.
         /// </summary>
         /// <returns>The enumerator.</returns>
-        public IEnumerator<IList<T>> GetEnumerator()
+        public IEnumerator<IReadOnlyList<T>> GetEnumerator()
         {
             if (Type == GenerateOption.WithRepetition)
             {
@@ -92,7 +92,7 @@ namespace Nito.Combinatorics
         /// <summary>
         /// An enumerator for Variations when the type is set to WithRepetition.
         /// </summary>
-        public sealed class EnumeratorWithRepetition : IEnumerator<IList<T>>
+        public sealed class EnumeratorWithRepetition : IEnumerator<IReadOnlyList<T>>
         {
             /// <summary>
             /// Construct a enumerator with the parent object.
@@ -157,7 +157,7 @@ namespace Nito.Combinatorics
             /// <summary>
             /// The current variation
             /// </summary>
-            public IList<T> Current
+            public IReadOnlyList<T> Current
             {
                 get
                 {
@@ -224,7 +224,7 @@ namespace Nito.Combinatorics
         /// <summary>
         /// An enumerator for Variations when the type is set to WithoutRepetition.
         /// </summary>
-        public sealed class EnumeratorWithoutRepetition : IEnumerator<IList<T>>
+        public sealed class EnumeratorWithoutRepetition : IEnumerator<IReadOnlyList<T>>
         {
             /// <summary>
             /// Construct a enumerator with the parent object.
@@ -258,7 +258,7 @@ namespace Nito.Combinatorics
             /// <summary>
             /// The current variation.
             /// </summary>
-            public IList<T> Current
+            public IReadOnlyList<T> Current
             {
                 get
                 {
