@@ -69,6 +69,7 @@ namespace Nito.Combinatorics
         /// <param name="comparer">Comparer used for defining the lexicographic order.</param>
         public Permutations(ICollection<T> values, GenerateOption type, IComparer<T> comparer)
         {
+            _ = values ?? throw new ArgumentNullException(nameof(values));
             Initialize(values, type, comparer);
         }
 
@@ -93,7 +94,7 @@ namespace Nito.Combinatorics
         /// <summary>
         /// The enumerator that enumerates each meta-collection of the enclosing Permutations class.
         /// </summary>
-        public class Enumerator : IEnumerator<IList<T>>
+        public sealed class Enumerator : IEnumerator<IList<T>>
         {
             /// <summary>
             /// Construct a enumerator with the parent object.
@@ -101,6 +102,7 @@ namespace Nito.Combinatorics
             /// <param name="source">The source Permutations object.</param>
             public Enumerator(Permutations<T> source)
             {
+                _ = source ?? throw new ArgumentNullException(nameof(source));
                 _myParent = source;
                 _myLexicographicalOrders = new int[source._myLexicographicOrders.Length];
                 source._myLexicographicOrders.CopyTo(_myLexicographicalOrders, 0);
@@ -130,13 +132,13 @@ namespace Nito.Combinatorics
                 switch (_myPosition)
                 {
                     case Position.BeforeFirst:
-                        MyValues = new List<T>(_myParent._myValues.Count);
-                        MyValues.AddRange(_myParent._myValues);
+                        _myValues = new List<T>(_myParent._myValues.Count);
+                        _myValues.AddRange(_myParent._myValues);
                         Array.Sort(_myLexicographicalOrders);
                         _myPosition = Position.InSet;
                         break;
                     case Position.InSet:
-                        if (MyValues.Count < 2)
+                        if (_myValues.Count < 2)
                         {
                             _myPosition = Position.AfterLast;
                         }
@@ -162,7 +164,7 @@ namespace Nito.Combinatorics
                 {
                     if (_myPosition == Position.InSet)
                     {
-                        return new List<T>(MyValues);
+                        return new List<T>(_myValues);
                     }
                     throw new InvalidOperationException();
                 }
@@ -177,7 +179,7 @@ namespace Nito.Combinatorics
                 {
                     if (_myPosition == Position.InSet)
                     {
-                        return new List<T>(MyValues);
+                        return new List<T>(_myValues);
                     }
                     throw new InvalidOperationException();
                 }
@@ -186,7 +188,7 @@ namespace Nito.Combinatorics
             /// <summary>
             /// Cleans up non-managed resources, of which there are none used here.
             /// </summary>
-            public virtual void Dispose()
+            public void Dispose()
             {
             }
 
@@ -243,9 +245,9 @@ namespace Nito.Combinatorics
             /// </summary>
             private void Swap(int i, int j)
             {
-                _myTemp = MyValues[i];
-                MyValues[i] = MyValues[j];
-                MyValues[j] = _myTemp;
+                _myTemp = _myValues[i];
+                _myValues[i] = _myValues[j];
+                _myValues[j] = _myTemp;
                 _myKviTemp = _myLexicographicalOrders[i];
                 _myLexicographicalOrders[i] = _myLexicographicalOrders[j];
                 _myLexicographicalOrders[j] = _myKviTemp;
@@ -276,7 +278,7 @@ namespace Nito.Combinatorics
             /// <summary>
             /// The list of values that are current to the enumerator.
             /// </summary>
-            public List<T> MyValues;
+            private List<T> _myValues;
 
             /// <summary>
             /// The set of permutations that this enumerator enumerates.

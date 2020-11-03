@@ -75,7 +75,7 @@ namespace Nito.Combinatorics
         /// <summary>
         /// An enumerator for Variations when the type is set to WithRepetition.
         /// </summary>
-        public class EnumeratorWithRepetition : IEnumerator<IList<T>>
+        public sealed class EnumeratorWithRepetition : IEnumerator<IList<T>>
         {
             /// <summary>
             /// Construct a enumerator with the parent object.
@@ -206,7 +206,7 @@ namespace Nito.Combinatorics
         /// <summary>
         /// An enumerator for Variations when the type is set to WithoutRepetition.
         /// </summary>
-        public class EnumeratorWithoutRepetition : IEnumerator<IList<T>>
+        public sealed class EnumeratorWithoutRepetition : IEnumerator<IList<T>>
         {
             /// <summary>
             /// Construct a enumerator with the parent object.
@@ -264,10 +264,7 @@ namespace Nito.Combinatorics
             /// <summary>
             /// Cleans up non-managed resources, of which there are none used here.
             /// </summary>
-            public void Dispose()
-            {
-
-            }
+            public void Dispose() => _myPermutationsEnumerator.Dispose();
 
             /// <summary>
             /// Creates a list of original values from the int permutation provided.  

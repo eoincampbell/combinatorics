@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +40,6 @@ namespace Nito.Combinatorics
         public Combinations(IList<T> values, int lowerIndex)
             : this(values, lowerIndex, GenerateOption.WithoutRepetition)
         {
-            Initialize(values, lowerIndex, GenerateOption.WithoutRepetition);
         }
 
         /// <summary>
@@ -51,6 +51,7 @@ namespace Nito.Combinatorics
         /// <param name="type">The type of Combinations set to generate.</param>
         public Combinations(IList<T> values, int lowerIndex, GenerateOption type)
         {
+            _ = values ?? throw new ArgumentNullException(nameof(values));
             Initialize(values, lowerIndex, type);
         }
 
@@ -75,7 +76,7 @@ namespace Nito.Combinatorics
         /// <summary>
         /// The enumerator that enumerates each meta-collection of the enclosing Combinations class.
         /// </summary>
-        public class Enumerator : IEnumerator<IList<T>>
+        public sealed class Enumerator : IEnumerator<IList<T>>
         {
             /// <summary>
             /// Construct a enumerator with the parent object.
@@ -137,10 +138,7 @@ namespace Nito.Combinatorics
             /// <summary>
             /// Cleans up non-managed resources, of which there are none used here.
             /// </summary>
-            public void Dispose()
-            {
-
-            }
+            public void Dispose() => _myPermutationsEnumerator.Dispose();
 
             /// <summary>
             /// The only complex function of this entire wrapper, ComputeCurrent() creates
@@ -206,7 +204,7 @@ namespace Nito.Combinatorics
             private List<T> _myCurrentList;
 
             /// <summary>
-            /// An enumertor of the parents list of lexicographic orderings.
+            /// An enumerator of the parents list of lexicographic orderings.
             /// </summary>
             private Permutations<bool>.Enumerator _myPermutationsEnumerator;
         }
@@ -247,7 +245,7 @@ namespace Nito.Combinatorics
         /// <param name="type">The type of Combinations set to generate.</param>
         /// <remarks>
         /// Copies the array and parameters and then creates a map of booleans that will 
-        /// be used by a permutations object to refence the subset.  This map is slightly
+        /// be used by a permutations object to reference the subset.  This map is slightly
         /// different based on whether the type is with or without repetition.
         /// 
         /// When the type is WithoutRepetition, then a map of upper index elements is
@@ -288,7 +286,7 @@ namespace Nito.Combinatorics
         }
 
         /// <summary>
-        /// Copy of values object is intialized with, required for enumerator reset.
+        /// Copy of values object is initialized with, required for enumerator reset.
         /// </summary>
         private List<T> _myValues;
 
