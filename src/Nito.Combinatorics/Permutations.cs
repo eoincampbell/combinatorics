@@ -358,10 +358,7 @@ namespace Nito.Combinatorics
             }
             else
             {
-                if (comparer == null)
-                {
-                    comparer = new SelfComparer<T>();
-                }
+                comparer ??= Comparer<T>.Default;
 
                 _myValues.Sort(comparer);
                 var j = 1;
@@ -434,21 +431,6 @@ namespace Nito.Combinatorics
         /// comparing T each time, much faster to let the CLR optimize around integers.
         /// </summary>
         private int[] _myLexicographicOrders;
-
-        /// <summary>
-        /// Inner class that wraps an IComparer around a type T when it is IComparable
-        /// </summary>
-        private class SelfComparer<TU> : IComparer<TU>
-        {
-            public int Compare(TU x, TU y)
-            {
-                var comparable = (IComparable<TU>)x;
-                if (comparable != null)
-                    return comparable.CompareTo(y);
-
-                return -1;
-            }
-        }
 
         /// <summary>
         /// The count of all permutations.  Calculated at Initialization and returned by Count property.
