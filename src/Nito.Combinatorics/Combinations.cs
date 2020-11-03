@@ -73,22 +73,21 @@ namespace Nito.Combinatorics
             Type = type;
             LowerIndex = lowerIndex;
             _myValues = values.ToList();
-            var myMap = new List<bool>();
+            List<bool> myMap;
             if (type == GenerateOption.WithoutRepetition)
             {
+                myMap = new List<bool>(_myValues.Count);
                 myMap.AddRange(_myValues.Select((t, i) => i < _myValues.Count - LowerIndex));
             }
             else
             {
+                myMap = new List<bool>(_myValues.Count + LowerIndex - 1);
                 for (var i = 0; i < _myValues.Count - 1; ++i)
-                {
                     myMap.Add(true);
-                }
                 for (var i = 0; i < LowerIndex; ++i)
-                {
                     myMap.Add(false);
-                }
             }
+
             _myPermutations = new Permutations<bool>(myMap);
         }
 
@@ -96,10 +95,7 @@ namespace Nito.Combinatorics
         /// Gets an enumerator for collecting the list of combinations.
         /// </summary>
         /// <returns>The enumerator.</returns>
-        public IEnumerator<IReadOnlyList<T>> GetEnumerator()
-        {
-            return new Enumerator(this);
-        }
+        public IEnumerator<IReadOnlyList<T>> GetEnumerator() => new Enumerator(this);
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
@@ -187,11 +183,9 @@ namespace Nito.Combinatorics
             private void ComputeCurrent()
             {
                 if (_myCurrentList != null)
-                {
                     return;
-                }
 
-                _myCurrentList = new List<T>();
+                _myCurrentList = new List<T>(_myParent.LowerIndex);
                 var index = 0;
                 var currentPermutation = _myPermutationsEnumerator.Current;
                 foreach (var p in currentPermutation)
@@ -200,9 +194,7 @@ namespace Nito.Combinatorics
                     {
                         _myCurrentList.Add(_myParent._myValues[index]);
                         if (_myParent.Type == GenerateOption.WithoutRepetition)
-                        {
                             ++index;
-                        }
                     }
                     else
                     {
