@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace Nito.Combinatorics
 {
@@ -231,7 +232,7 @@ namespace Nito.Combinatorics
         /// This value is mathematically defined as Choose(M, N) where M is the set size
         /// and N is the subset size.  This is M! / (N! * (M-N)!).
         /// </summary>
-        public long Count => _myPermutations.Count;
+        public BigInteger Count => _myPermutations.Count;
 
         /// <summary>
         /// The type of Combinations set that is generated.

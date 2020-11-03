@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace Nito.Combinatorics
 {
@@ -45,23 +46,6 @@ namespace Nito.Combinatorics
         }
 
         /// <summary>
-        /// Given two integers expressed as a list of prime factors, multiplies these numbers
-        /// together and returns an integer also expressed as a set of prime factors.
-        /// This allows multiplication to overflow well beyond a Int64 if necessary.  
-        /// </summary>
-        /// <param name="lhs">Left Hand Side argument, expressed as list of prime factors.</param>
-        /// <param name="rhs">Right Hand Side argument, expressed as list of prime factors.</param>
-        /// <returns>Product, expressed as list of prime factors.</returns>
-        public static List<int> MultiplyPrimeFactors(IEnumerable<int> lhs, IEnumerable<int> rhs)
-        {
-            var product = lhs.Concat(rhs).ToList();
-
-            product.Sort();
-
-            return product;
-        }
-
-        /// <summary>
         /// Given two integers expressed as a list of prime factors, divides these numbers
         /// and returns an integer also expressed as a set of prime factors.
         /// If the result is not a integer, then the result is undefined.  That is, 11 / 5
@@ -89,9 +73,9 @@ namespace Nito.Combinatorics
         /// </summary>
         /// <param name="value">Integer, expressed as list of prime factors.</param>
         /// <returns>Standard long representation.</returns>
-        public static long EvaluatePrimeFactors(IEnumerable<int> value)
+        public static BigInteger EvaluatePrimeFactors(IEnumerable<int> value)
         {
-            return value.Aggregate<int, long>(1, (current, prime) => current * prime);
+            return value.Aggregate<int, BigInteger>(1, (current, prime) => current * prime);
         }
 
         /// <summary>
