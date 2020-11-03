@@ -139,7 +139,7 @@ namespace Nito.Combinatorics
             /// <returns>True if successfully moved to next combination, False if no more unique combinations exist.</returns>
             /// <remarks>
             /// The heavy lifting is done by the permutations object, the combination is generated
-            /// by creating a new list of those items that have a true in the permutation parrellel array.
+            /// by creating a new list of those items that have a true in the permutation parallel array.
             /// </remarks>
             public bool MoveNext()
             {
@@ -156,7 +156,7 @@ namespace Nito.Combinatorics
                 get
                 {
                     ComputeCurrent();
-                    return _myCurrentList;
+                    return _myCurrentList!;
                 }
             }
 
@@ -168,7 +168,7 @@ namespace Nito.Combinatorics
                 get
                 {
                     ComputeCurrent();
-                    return _myCurrentList;
+                    return _myCurrentList!;
                 }
             }
 
@@ -238,7 +238,7 @@ namespace Nito.Combinatorics
             /// <summary>
             /// The current list of values, this is lazy evaluated by the Current property.
             /// </summary>
-            private List<T> _myCurrentList;
+            private List<T>? _myCurrentList;
 
             /// <summary>
             /// An enumerator of the parents list of lexicographic orderings.
