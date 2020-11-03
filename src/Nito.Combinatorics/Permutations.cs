@@ -70,7 +70,60 @@ namespace Nito.Combinatorics
         public Permutations(ICollection<T> values, GenerateOption type, IComparer<T> comparer)
         {
             _ = values ?? throw new ArgumentNullException(nameof(values));
-            Initialize(values, type, comparer);
+
+            // Copy information provided and then create a parallel int array of lexicographic
+            // orders that will be used for the actual permutation algorithm.  
+            // The input array is first sorted as required for WithoutRepetition and always just for consistency.
+            // This array is constructed one of two way depending on the type of the collection.
+            //
+            // When type is MetaCollectionType.WithRepetition, then all N! permutations are returned
+            // and the lexicographic orders are simply generated as 1, 2, ... N.  
+            // E.g.
+            // Input array:          {A A B C D E E}
+            // Lexicographic Orders: {1 2 3 4 5 6 7}
+            // 
+            // When type is MetaCollectionType.WithoutRepetition, then fewer are generated, with each
+            // identical element in the input array not repeated.  The lexicographic sort algorithm
+            // handles this natively as long as the repetition is repeated.
+            // E.g.
+            // Input array:          {A A B C D E E}
+            // Lexicographic Orders: {1 1 2 3 4 5 5}
+
+            _myMetaCollectionType = type;
+            _myValues = new List<T>(values.Count);
+            _myValues.AddRange(values);
+            _myLexicographicOrders = new int[values.Count];
+
+            if (type == GenerateOption.WithRepetition)
+            {
+                for (var i = 0; i < _myLexicographicOrders.Length; ++i)
+                {
+                    _myLexicographicOrders[i] = i;
+                }
+            }
+            else
+            {
+                comparer ??= Comparer<T>.Default;
+
+                _myValues.Sort(comparer);
+                var j = 1;
+                if (_myLexicographicOrders.Length > 0)
+                {
+                    _myLexicographicOrders[0] = j;
+                }
+
+                for (var i = 1; i < _myLexicographicOrders.Length; ++i)
+                {
+                    if (comparer.Compare(_myValues[i - 1], _myValues[i]) != 0)
+                    {
+                        ++j;
+                    }
+
+                    _myLexicographicOrders[i] = j;
+                }
+            }
+
+            _myCount = GetCount();
         }
 
         /// <summary>
@@ -319,65 +372,6 @@ namespace Nito.Combinatorics
         /// For Permutation, this is always equal to the UpperIndex.
         /// </summary>
         public int LowerIndex => _myValues.Count;
-
-        /// <summary>
-        /// Common initializer used by the multiple flavors of constructors.
-        /// </summary>
-        /// <remarks>
-        /// Copies information provided and then creates a parallel int array of lexicographic
-        /// orders that will be used for the actual permutation algorithm.  
-        /// The input array is first sorted as required for WithoutRepetition and always just for consistency.
-        /// This array is constructed one of two way depending on the type of the collection.
-        ///
-        /// When type is MetaCollectionType.WithRepetition, then all N! permutations are returned
-        /// and the lexicographic orders are simply generated as 1, 2, ... N.  
-        /// E.g.
-        /// Input array:          {A A B C D E E}
-        /// Lexicographic Orders: {1 2 3 4 5 6 7}
-        /// 
-        /// When type is MetaCollectionType.WithoutRepetition, then fewer are generated, with each
-        /// identical element in the input array not repeated.  The lexicographic sort algorithm
-        /// handles this natively as long as the repetition is repeated.
-        /// E.g.
-        /// Input array:          {A A B C D E E}
-        /// Lexicographic Orders: {1 1 2 3 4 5 5}
-        /// </remarks>
-        private void Initialize(ICollection<T> values, GenerateOption type, IComparer<T> comparer)
-        {
-            _myMetaCollectionType = type;
-            _myValues = new List<T>(values.Count);
-            _myValues.AddRange(values);
-            _myLexicographicOrders = new int[values.Count];
-
-            if (type == GenerateOption.WithRepetition)
-            {
-                for (var i = 0; i < _myLexicographicOrders.Length; ++i)
-                {
-                    _myLexicographicOrders[i] = i;
-                }
-            }
-            else
-            {
-                comparer ??= Comparer<T>.Default;
-
-                _myValues.Sort(comparer);
-                var j = 1;
-                if (_myLexicographicOrders.Length > 0)
-                {
-                    _myLexicographicOrders[0] = j;
-                }
-
-                for (var i = 1; i < _myLexicographicOrders.Length; ++i)
-                {
-                    if (comparer.Compare(_myValues[i - 1], _myValues[i]) != 0)
-                    {
-                        ++j;
-                    }
-                    _myLexicographicOrders[i] = j;
-                }
-            }
-            _myCount = GetCount();
-        }
 
         /// <summary>
         /// Calculates the total number of permutations that will be returned.  

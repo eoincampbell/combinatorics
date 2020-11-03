@@ -52,7 +52,44 @@ namespace Nito.Combinatorics
         public Combinations(IList<T> values, int lowerIndex, GenerateOption type)
         {
             _ = values ?? throw new ArgumentNullException(nameof(values));
-            Initialize(values, lowerIndex, type);
+
+            // Copy the array and parameters and then create a map of booleans that will 
+            // be used by a permutations object to reference the subset.  This map is slightly
+            // different based on whether the type is with or without repetition.
+            // 
+            // When the type is WithoutRepetition, then a map of upper index elements is
+            // created with lower index false's.  
+            // E.g. 8 choose 3 generates:
+            // Map: {1 1 1 1 1 0 0 0}
+            // Note: For sorting reasons, false denotes inclusion in output.
+            // 
+            // When the type is WithRepetition, then a map of upper index - 1 + lower index
+            // elements is created with the falses indicating that the 'current' element should
+            // be included and the trues meaning to advance the 'current' element by one.
+            // E.g. 8 choose 3 generates:
+            // Map: {1 1 1 1 1 1 1 1 0 0 0} (7 trues, 3 falses).
+
+            _myMetaCollectionType = type;
+            _myLowerIndex = lowerIndex;
+            _myValues = new List<T>();
+            _myValues.AddRange(values);
+            var myMap = new List<bool>();
+            if (type == GenerateOption.WithoutRepetition)
+            {
+                myMap.AddRange(_myValues.Select((t, i) => i < _myValues.Count - _myLowerIndex));
+            }
+            else
+            {
+                for (var i = 0; i < values.Count - 1; ++i)
+                {
+                    myMap.Add(true);
+                }
+                for (var i = 0; i < _myLowerIndex; ++i)
+                {
+                    myMap.Add(false);
+                }
+            }
+            _myPermutations = new Permutations<bool>(myMap);
         }
 
         /// <summary>
@@ -235,54 +272,6 @@ namespace Nito.Combinatorics
             {
                 return _myLowerIndex;
             }
-        }
-
-        /// <summary>
-        /// Initialize the combinations by settings a copy of the values from the 
-        /// </summary>
-        /// <param name="values">List of values to select combinations from.</param>
-        /// <param name="lowerIndex">The size of each combination set to return.</param>
-        /// <param name="type">The type of Combinations set to generate.</param>
-        /// <remarks>
-        /// Copies the array and parameters and then creates a map of booleans that will 
-        /// be used by a permutations object to reference the subset.  This map is slightly
-        /// different based on whether the type is with or without repetition.
-        /// 
-        /// When the type is WithoutRepetition, then a map of upper index elements is
-        /// created with lower index false's.  
-        /// E.g. 8 choose 3 generates:
-        /// Map: {1 1 1 1 1 0 0 0}
-        /// Note: For sorting reasons, false denotes inclusion in output.
-        /// 
-        /// When the type is WithRepetition, then a map of upper index - 1 + lower index
-        /// elements is created with the falses indicating that the 'current' element should
-        /// be included and the trues meaning to advance the 'current' element by one.
-        /// E.g. 8 choose 3 generates:
-        /// Map: {1 1 1 1 1 1 1 1 0 0 0} (7 trues, 3 falses).
-        /// </remarks>
-        private void Initialize(IList<T> values, int lowerIndex, GenerateOption type)
-        {
-            _myMetaCollectionType = type;
-            _myLowerIndex = lowerIndex;
-            _myValues = new List<T>();
-            _myValues.AddRange(values);
-            var myMap = new List<bool>();
-            if (type == GenerateOption.WithoutRepetition)
-            {
-                myMap.AddRange(_myValues.Select((t, i) => i < _myValues.Count - _myLowerIndex));
-            }
-            else
-            {
-                for (var i = 0; i < values.Count - 1; ++i)
-                {
-                    myMap.Add(true);
-                }
-                for (var i = 0; i < _myLowerIndex; ++i)
-                {
-                    myMap.Add(false);
-                }
-            }
-            _myPermutations = new Permutations<bool>(myMap);
         }
 
         /// <summary>
