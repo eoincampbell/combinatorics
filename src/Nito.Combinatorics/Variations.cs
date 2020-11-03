@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Nito.Combinatorics
 {
@@ -45,8 +46,7 @@ namespace Nito.Combinatorics
         {
             Type = type;
             LowerIndex = lowerIndex;
-            _myValues = new List<T>();
-            _myValues.AddRange(values);
+            _myValues = values.ToList();
 
             if (type != GenerateOption.WithoutRepetition)
             {
