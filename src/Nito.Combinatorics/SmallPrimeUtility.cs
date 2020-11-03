@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,6 +74,8 @@ namespace Nito.Combinatorics
         /// <returns>Resultant, expressed as list of prime factors.</returns>
         public static List<int> DividePrimeFactors(IList<int> numerator, IList<int> denominator)
         {
+            _ = numerator ?? throw new ArgumentNullException(nameof(numerator));
+            _ = denominator ?? throw new ArgumentNullException(nameof(denominator));
             var product = numerator.ToList();
             foreach (var prime in denominator)
             {
