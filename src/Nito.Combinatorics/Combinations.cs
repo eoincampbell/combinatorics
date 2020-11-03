@@ -37,7 +37,7 @@ namespace Nito.Combinatorics
         /// </summary>
         /// <param name="values">List of values to select combinations from.</param>
         /// <param name="lowerIndex">The size of each combination set to return.</param>
-        public Combinations(IList<T> values, int lowerIndex)
+        public Combinations(IEnumerable<T> values, int lowerIndex)
             : this(values, lowerIndex, GenerateOption.WithoutRepetition)
         {
         }
@@ -49,7 +49,7 @@ namespace Nito.Combinatorics
         /// <param name="values">List of values to select combinations from.</param>
         /// <param name="lowerIndex">The size of each combination set to return.</param>
         /// <param name="type">The type of Combinations set to generate.</param>
-        public Combinations(IList<T> values, int lowerIndex, GenerateOption type)
+        public Combinations(IEnumerable<T> values, int lowerIndex, GenerateOption type)
         {
             _ = values ?? throw new ArgumentNullException(nameof(values));
 
@@ -71,8 +71,7 @@ namespace Nito.Combinatorics
 
             _myMetaCollectionType = type;
             _myLowerIndex = lowerIndex;
-            _myValues = new List<T>();
-            _myValues.AddRange(values);
+            _myValues = values.ToList();
             var myMap = new List<bool>();
             if (type == GenerateOption.WithoutRepetition)
             {
@@ -80,7 +79,7 @@ namespace Nito.Combinatorics
             }
             else
             {
-                for (var i = 0; i < values.Count - 1; ++i)
+                for (var i = 0; i < _myValues.Count - 1; ++i)
                 {
                     myMap.Add(true);
                 }

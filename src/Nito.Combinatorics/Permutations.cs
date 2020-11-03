@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Nito.Combinatorics
 {
@@ -31,7 +32,7 @@ namespace Nito.Combinatorics
         /// The repetition type defaults to MetaCollectionType.WithholdRepetitionSets
         /// </summary>
         /// <param name="values">List of values to permute.</param>
-        public Permutations(ICollection<T> values)
+        public Permutations(IEnumerable<T> values)
             : this(values, GenerateOption.WithoutRepetition, null)
         {
         }
@@ -43,7 +44,7 @@ namespace Nito.Combinatorics
         /// </summary>
         /// <param name="values">List of values to permute.</param>
         /// <param name="type">The type of permutation set to calculate.</param>
-        public Permutations(ICollection<T> values, GenerateOption type)
+        public Permutations(IEnumerable<T> values, GenerateOption type)
             : this(values, type, null)
         {
         }
@@ -55,7 +56,7 @@ namespace Nito.Combinatorics
         /// </summary>
         /// <param name="values">List of values to permute.</param>
         /// <param name="comparer">Comparer used for defining the lexicographic order.</param>
-        public Permutations(ICollection<T> values, IComparer<T>? comparer)
+        public Permutations(IEnumerable<T> values, IComparer<T>? comparer)
             : this(values, GenerateOption.WithoutRepetition, comparer)
         {
         }
@@ -67,7 +68,7 @@ namespace Nito.Combinatorics
         /// <param name="values">List of values to permute.</param>
         /// <param name="type">The type of permutation set to calculate.</param>
         /// <param name="comparer">Comparer used for defining the lexicographic order.</param>
-        public Permutations(ICollection<T> values, GenerateOption type, IComparer<T>? comparer)
+        public Permutations(IEnumerable<T> values, GenerateOption type, IComparer<T>? comparer)
         {
             _ = values ?? throw new ArgumentNullException(nameof(values));
 
@@ -90,9 +91,8 @@ namespace Nito.Combinatorics
             // Lexicographic Orders: {1 1 2 3 4 5 5}
 
             _myMetaCollectionType = type;
-            _myValues = new List<T>(values.Count);
-            _myValues.AddRange(values);
-            _myLexicographicOrders = new int[values.Count];
+            _myValues = values.ToList();
+            _myLexicographicOrders = new int[_myValues.Count];
 
             if (type == GenerateOption.WithRepetition)
             {
