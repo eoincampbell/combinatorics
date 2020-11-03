@@ -28,7 +28,7 @@ namespace Nito.Combinatorics
     /// {A A B} {A A B} {A B B} {A B B}
     /// </remarks>
     /// <typeparam name="T">The type of the values within the list.</typeparam>
-    public sealed class Combinations<T> : IMetaCollection<T>
+    public sealed class Combinations<T> : IEnumerable<IReadOnlyList<T>>
     {
         /// <summary>
         /// Create a combination set from the provided list of values.

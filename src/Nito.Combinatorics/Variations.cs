@@ -21,7 +21,7 @@ namespace Nito.Combinatorics
     /// The equality of multiple inputs is not considered when generating variations.
     /// </remarks>
     /// <typeparam name="T">The type of the values within the list.</typeparam>
-    public sealed class Variations<T> : IMetaCollection<T>
+    public sealed class Variations<T> : IEnumerable<IReadOnlyList<T>>
     {
         /// <summary>
         /// Create a variation set from the indicated list of values.
