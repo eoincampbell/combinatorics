@@ -14,7 +14,7 @@ namespace Nito.Combinatorics
     /// The prime table contains all primes up to Sqrt(2^31) which are all of the primes
     /// requires to factorize any Int32 positive integer.
     /// </summary>
-    public static class SmallPrimeUtility
+    internal static class SmallPrimeUtility
     {
         /// <summary>
         /// Performs a prime factorization of a given integer using the table of primes in PrimeTable.
@@ -49,6 +49,7 @@ namespace Nito.Combinatorics
                     prime = PrimeTable[primeIndex];
                 }
             }
+
             return factors;
         }
 
@@ -69,9 +70,7 @@ namespace Nito.Combinatorics
             _ = denominator ?? throw new ArgumentNullException(nameof(denominator));
             var product = numerator.ToList();
             foreach (var prime in denominator)
-            {
                 product.Remove(prime);
-            }
             return product;
         }
 
@@ -82,7 +81,11 @@ namespace Nito.Combinatorics
         /// <returns>Standard long representation.</returns>
         public static BigInteger EvaluatePrimeFactors(IEnumerable<int> value)
         {
-            return value.Aggregate<int, BigInteger>(1, (current, prime) => current * prime);
+            _ = value ?? throw new ArgumentNullException(nameof(value));
+            BigInteger result = 1;
+            foreach (var prime in value)
+                result *= prime;
+            return result;
         }
 
         /// <summary>
@@ -90,7 +93,7 @@ namespace Nito.Combinatorics
         /// </summary>
         static SmallPrimeUtility()
         {
-            CalculatePrimes();
+            PrimeTable = CalculatePrimes();
         }
 
         /// <summary>
@@ -99,7 +102,7 @@ namespace Nito.Combinatorics
         /// Small tables are best built using the Sieve Of Eratosthenes,
         /// Reference: http://primes.utm.edu/glossary/page.php?sort=SieveOfEratosthenes
         /// </summary>
-        private static void CalculatePrimes()
+        private static IReadOnlyList<int> CalculatePrimes()
         {
             // Build Sieve Of Eratosthenes
             var sieve = new BitArray(65536, true);
@@ -109,26 +112,23 @@ namespace Nito.Combinatorics
 
                 // It is prime, so remove all future factors...
                 for (var nonPrime = 2 * possiblePrime; nonPrime < 65536; nonPrime += possiblePrime)
-                {
                     sieve[nonPrime] = false;
-                }
             }
+
             // Scan sieve for primes...
-            _myPrimes = new List<int>();
+            var primes = new List<int>();
             for (var i = 2; i < 65536; ++i)
             {
                 if (sieve[i])
-                {
-                    _myPrimes.Add(i);
-                }
+                    primes.Add(i);
             }
+
+            return primes;
         }
 
         /// <summary>
         /// A List of all primes from 2 to 2^16.
         /// </summary>
-        public static IReadOnlyList<int> PrimeTable => _myPrimes;
-
-        private static List<int> _myPrimes = new List<int>();
+        public static IReadOnlyList<int> PrimeTable { get; }
     }
 }
