@@ -95,7 +95,7 @@ namespace Nito.Combinatorics
         /// Gets an enumerator for collecting the list of combinations.
         /// </summary>
         /// <returns>The enumerator.</returns>
-        public IEnumerator<IList<T>> GetEnumerator()
+        public IEnumerator<IReadOnlyList<T>> GetEnumerator()
         {
             return new Enumerator(this);
         }
@@ -112,7 +112,7 @@ namespace Nito.Combinatorics
         /// <summary>
         /// The enumerator that enumerates each meta-collection of the enclosing Combinations class.
         /// </summary>
-        public sealed class Enumerator : IEnumerator<IList<T>>
+        public sealed class Enumerator : IEnumerator<IReadOnlyList<T>>
         {
             /// <summary>
             /// Construct a enumerator with the parent object.
@@ -150,7 +150,7 @@ namespace Nito.Combinatorics
             /// <summary>
             /// The current combination
             /// </summary>
-            public IList<T> Current
+            public IReadOnlyList<T> Current
             {
                 get
                 {

@@ -130,7 +130,7 @@ namespace Nito.Combinatorics
         /// Gets an enumerator for collecting the list of permutations.
         /// </summary>
         /// <returns>The enumerator.</returns>
-        public IEnumerator<IList<T>> GetEnumerator()
+        public IEnumerator<IReadOnlyList<T>> GetEnumerator()
         {
             return new Enumerator(this);
         }
@@ -147,7 +147,7 @@ namespace Nito.Combinatorics
         /// <summary>
         /// The enumerator that enumerates each meta-collection of the enclosing Permutations class.
         /// </summary>
-        public sealed class Enumerator : IEnumerator<IList<T>>
+        public sealed class Enumerator : IEnumerator<IReadOnlyList<T>>
         {
             /// <summary>
             /// Construct a enumerator with the parent object.
@@ -226,7 +226,7 @@ namespace Nito.Combinatorics
             /// <summary>
             /// The current permutation.
             /// </summary>
-            public IList<T> Current
+            public IReadOnlyList<T> Current
             {
                 get
                 {
@@ -326,7 +326,7 @@ namespace Nito.Combinatorics
             /// <summary>
             /// The list of values that are current to the enumerator.
             /// </summary>
-            private List<T> _myValues;
+            private readonly List<T> _myValues;
 
             /// <summary>
             /// The set of permutations that this enumerator enumerates.

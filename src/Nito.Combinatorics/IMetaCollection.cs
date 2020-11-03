@@ -8,7 +8,7 @@ namespace Nito.Combinatorics
     /// this class inherits defines the mechanism for enumerating through the collections.  
     /// </summary>
     /// <typeparam name="T">The of the elements in the collection, not the type of the collection.</typeparam>
-    interface IMetaCollection<T> : IEnumerable<IList<T>>
+    interface IMetaCollection<T> : IEnumerable<IReadOnlyList<T>>
     {
         /// <summary>
         /// The count of items in the collection.  This is not inherited from
