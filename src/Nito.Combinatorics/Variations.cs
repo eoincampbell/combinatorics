@@ -43,7 +43,24 @@ namespace Nito.Combinatorics
         /// <param name="type">Type indicates whether to use repetition in set generation.</param>
         public Variations(IEnumerable<T> values, int lowerIndex, GenerateOption type)
         {
-            Initialize(values, lowerIndex, type);
+            Type = type;
+            LowerIndex = lowerIndex;
+            _myValues = new List<T>();
+            _myValues.AddRange(values);
+
+            if (type != GenerateOption.WithoutRepetition)
+            {
+                return;
+            }
+
+            var myMap = new List<int>();
+            var index = 0;
+            for (var i = 0; i < _myValues.Count; ++i)
+            {
+                myMap.Add(i >= _myValues.Count - LowerIndex ? index++ : int.MaxValue);
+            }
+
+            _myPermutations = new Permutations<int>(myMap);
         }
 
         /// <summary>
@@ -363,34 +380,6 @@ namespace Nito.Combinatorics
         /// The lower index of the meta-collection, equal to the number of items returned each iteration.
         /// </summary>
         public int LowerIndex { get; private set; }
-
-        /// <summary>
-        /// Initialize the variations for constructors.
-        /// </summary>
-        /// <param name="values">List of values to select variations from.</param>
-        /// <param name="lowerIndex">The size of each variation set to return.</param>
-        /// <param name="type">The type of variations set to generate.</param>
-        private void Initialize(IEnumerable<T> values, int lowerIndex, GenerateOption type)
-        {
-            Type = type;
-            LowerIndex = lowerIndex;
-            _myValues = new List<T>();
-            _myValues.AddRange(values);
-
-            if (type != GenerateOption.WithoutRepetition)
-            {
-                return;
-            }
-
-            var myMap = new List<int>();
-            var index = 0;
-            for (var i = 0; i < _myValues.Count; ++i)
-            {
-                myMap.Add(i >= _myValues.Count - LowerIndex ? index++ : int.MaxValue);
-            }
-
-            _myPermutations = new Permutations<int>(myMap);
-        }
 
         /// <summary>
         /// Copy of values object is initialized with, required for enumerator reset.
