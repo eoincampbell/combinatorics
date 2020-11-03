@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace Nito.Combinatorics
 {
@@ -325,7 +326,7 @@ namespace Nito.Combinatorics
         /// I.e., count of permutations of "AAB" will be 3 instead of 6.  
         /// If <see cref="Type"/> is <see cref="GenerateOption.WithRepetition"/>, then this is all combinations and is therefore N!, where N is the number of values in the input set.
         /// </summary>
-        public long Count { get; }
+        public BigInteger Count { get; }
 
         /// <summary>
         /// The type of permutations set that is generated.
@@ -350,7 +351,7 @@ namespace Nito.Combinatorics
         /// and cancelling out all of the denominator terms before taking the product of the numerator terms.  
         /// </summary>
         /// <returns>The number of permutations.</returns>
-        private long GetCount()
+        private BigInteger GetCount()
         {
             var runCount = 1;
             var divisors = new List<int>();

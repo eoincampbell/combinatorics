@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace Nito.Combinatorics
 {
@@ -319,7 +320,7 @@ namespace Nito.Combinatorics
         /// Variations with repetitions does not behave like other meta-collections and it's
         /// count is equal to N^P, where N is the upper index and P is the lower index.
         /// </remarks>
-        public long Count
+        public BigInteger Count
         {
             get
             {
@@ -327,7 +328,7 @@ namespace Nito.Combinatorics
                 {
                     return _myPermutations!.Count;
                 }
-                return (long)Math.Pow(UpperIndex, LowerIndex);
+                return BigInteger.Pow(UpperIndex, LowerIndex);
             }
         }
 
