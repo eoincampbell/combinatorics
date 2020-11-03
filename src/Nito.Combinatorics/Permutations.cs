@@ -23,7 +23,7 @@ namespace Nito.Combinatorics
     /// no comparer is required and T does not need to be IComparable.
     /// </remarks>
     /// <typeparam name="T">The type of the values within the list.</typeparam>
-    public sealed class Permutations<T> : IMetaCollection<T>
+    public sealed class Permutations<T> : IEnumerable<IReadOnlyList<T>>
     {
         /// <summary>
         /// Create a permutation set from the provided list of values.  
