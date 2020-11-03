@@ -2,12 +2,6 @@ using System.Collections.Generic;
 
 namespace Nito.Combinatorics
 {
-    /// <summary>
-    /// Interface for Permutations, Combinations and any other classes that present
-    /// a collection of collections based on an input collection.  The enumerators that 
-    /// this class inherits defines the mechanism for enumerating through the collections.  
-    /// </summary>
-    /// <typeparam name="T">The of the elements in the collection, not the type of the collection.</typeparam>
     interface IMetaCollection<T> : IEnumerable<IReadOnlyList<T>>
     {
         /// <summary>

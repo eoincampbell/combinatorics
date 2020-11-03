@@ -52,7 +52,7 @@ namespace Nito.Combinatorics
         /// <param name="lhs">Left Hand Side argument, expressed as list of prime factors.</param>
         /// <param name="rhs">Right Hand Side argument, expressed as list of prime factors.</param>
         /// <returns>Product, expressed as list of prime factors.</returns>
-        public static List<int> MultiplyPrimeFactors(IList<int> lhs, IList<int> rhs)
+        public static List<int> MultiplyPrimeFactors(IEnumerable<int> lhs, IEnumerable<int> rhs)
         {
             var product = lhs.Concat(rhs).ToList();
 
@@ -72,7 +72,7 @@ namespace Nito.Combinatorics
         /// <param name="numerator">Numerator argument, expressed as list of prime factors.</param>
         /// <param name="denominator">Denominator argument, expressed as list of prime factors.</param>
         /// <returns>Resultant, expressed as list of prime factors.</returns>
-        public static List<int> DividePrimeFactors(IList<int> numerator, IList<int> denominator)
+        public static List<int> DividePrimeFactors(IEnumerable<int> numerator, IEnumerable<int> denominator)
         {
             _ = numerator ?? throw new ArgumentNullException(nameof(numerator));
             _ = denominator ?? throw new ArgumentNullException(nameof(denominator));
@@ -89,7 +89,7 @@ namespace Nito.Combinatorics
         /// </summary>
         /// <param name="value">Integer, expressed as list of prime factors.</param>
         /// <returns>Standard long representation.</returns>
-        public static long EvaluatePrimeFactors(IList<int> value)
+        public static long EvaluatePrimeFactors(IEnumerable<int> value)
         {
             return value.Aggregate<int, long>(1, (current, prime) => current * prime);
         }
@@ -131,13 +131,12 @@ namespace Nito.Combinatorics
                     _myPrimes.Add(i);
                 }
             }
-
         }
 
         /// <summary>
         /// A List of all primes from 2 to 2^16.
         /// </summary>
-        public static IList<int> PrimeTable => _myPrimes;
+        public static IReadOnlyList<int> PrimeTable => _myPrimes;
 
         private static List<int> _myPrimes = new List<int>();
     }
