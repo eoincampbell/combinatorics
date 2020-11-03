@@ -76,18 +76,7 @@ namespace Nito.Combinatorics
             return new EnumeratorWithoutRepetition(this);
         }
 
-        /// <summary>
-        /// Gets an enumerator for the collection of Variations.
-        /// </summary>
-        /// <returns>The enumerator.</returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            if (Type == GenerateOption.WithRepetition)
-            {
-                return new EnumeratorWithRepetition(this);
-            }
-            return new EnumeratorWithoutRepetition(this);
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         /// <summary>
         /// An enumerator for Variations when the type is set to WithRepetition.
@@ -166,24 +155,11 @@ namespace Nito.Combinatorics
                 }
             }
 
-            /// <summary>
-            /// The current variation.
-            /// </summary>
-            object IEnumerator.Current
-            {
-                get
-                {
-                    ComputeCurrent();
-                    return _myCurrentList!;
-                }
-            }
+            object IEnumerator.Current => Current;
 
-            /// <summary>
-            /// Cleans up non-managed resources, of which there are none used here.
-            /// </summary>
+            /// <inheritdoc />
             public void Dispose()
             {
-
             }
 
             /// <summary>
@@ -267,21 +243,9 @@ namespace Nito.Combinatorics
                 }
             }
 
-            /// <summary>
-            /// The current variation.
-            /// </summary>
-            object IEnumerator.Current
-            {
-                get
-                {
-                    ComputeCurrent();
-                    return _myCurrentList!;
-                }
-            }
+            object IEnumerator.Current => Current;
 
-            /// <summary>
-            /// Cleans up non-managed resources, of which there are none used here.
-            /// </summary>
+            /// <inheritdoc />
             public void Dispose() => _myPermutationsEnumerator.Dispose();
 
             /// <summary>
@@ -370,7 +334,7 @@ namespace Nito.Combinatorics
         /// <summary>
         /// The type of Variations set that is generated.
         /// </summary>
-        public GenerateOption Type { get; private set; }
+        public GenerateOption Type { get; }
 
         /// <summary>
         /// The upper index of the meta-collection, equal to the number of items in the initial set.
@@ -380,7 +344,7 @@ namespace Nito.Combinatorics
         /// <summary>
         /// The lower index of the meta-collection, equal to the number of items returned each iteration.
         /// </summary>
-        public int LowerIndex { get; private set; }
+        public int LowerIndex { get; }
 
         /// <summary>
         /// Copy of values object is initialized with, required for enumerator reset.

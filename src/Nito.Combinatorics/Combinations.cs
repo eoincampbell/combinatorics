@@ -69,13 +69,13 @@ namespace Nito.Combinatorics
             // E.g. 8 choose 3 generates:
             // Map: {1 1 1 1 1 1 1 1 0 0 0} (7 trues, 3 falses).
 
-            _myMetaCollectionType = type;
-            _myLowerIndex = lowerIndex;
+            Type = type;
+            LowerIndex = lowerIndex;
             _myValues = values.ToList();
             var myMap = new List<bool>();
             if (type == GenerateOption.WithoutRepetition)
             {
-                myMap.AddRange(_myValues.Select((t, i) => i < _myValues.Count - _myLowerIndex));
+                myMap.AddRange(_myValues.Select((t, i) => i < _myValues.Count - LowerIndex));
             }
             else
             {
@@ -83,7 +83,7 @@ namespace Nito.Combinatorics
                 {
                     myMap.Add(true);
                 }
-                for (var i = 0; i < _myLowerIndex; ++i)
+                for (var i = 0; i < LowerIndex; ++i)
                 {
                     myMap.Add(false);
                 }
@@ -100,14 +100,7 @@ namespace Nito.Combinatorics
             return new Enumerator(this);
         }
 
-        /// <summary>
-        /// Gets an enumerator for collecting the list of combinations.
-        /// </summary>
-        /// <returns>The enumerator.</returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return new Enumerator(this);
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         /// <summary>
         /// The enumerator that enumerates each meta-collection of the enclosing Combinations class.
@@ -159,21 +152,9 @@ namespace Nito.Combinatorics
                 }
             }
 
-            /// <summary>
-            /// The current combination
-            /// </summary>
-            object IEnumerator.Current
-            {
-                get
-                {
-                    ComputeCurrent();
-                    return _myCurrentList!;
-                }
-            }
+            object IEnumerator.Current => Current;
 
-            /// <summary>
-            /// Cleans up non-managed resources, of which there are none used here.
-            /// </summary>
+            /// <inheritdoc />
             public void Dispose() => _myPermutationsEnumerator.Dispose();
 
             /// <summary>
@@ -242,7 +223,7 @@ namespace Nito.Combinatorics
             /// <summary>
             /// An enumerator of the parents list of lexicographic orderings.
             /// </summary>
-            private Permutations<bool>.Enumerator _myPermutationsEnumerator;
+            private readonly Permutations<bool>.Enumerator _myPermutationsEnumerator;
         }
 
         /// <summary>
@@ -255,7 +236,7 @@ namespace Nito.Combinatorics
         /// <summary>
         /// The type of Combinations set that is generated.
         /// </summary>
-        public GenerateOption Type => _myMetaCollectionType;
+        public GenerateOption Type { get; }
 
         /// <summary>
         /// The upper index of the meta-collection, equal to the number of items in the initial set.
@@ -265,32 +246,16 @@ namespace Nito.Combinatorics
         /// <summary>
         /// The lower index of the meta-collection, equal to the number of items returned each iteration.
         /// </summary>
-        public int LowerIndex
-        {
-            get
-            {
-                return _myLowerIndex;
-            }
-        }
+        public int LowerIndex { get; }
 
         /// <summary>
         /// Copy of values object is initialized with, required for enumerator reset.
         /// </summary>
-        private List<T> _myValues;
+        private readonly List<T> _myValues;
 
         /// <summary>
         /// Permutations object that handles permutations on booleans for combination inclusion.
         /// </summary>
-        private Permutations<bool> _myPermutations;
-
-        /// <summary>
-        /// The type of the combination collection.
-        /// </summary>
-        private GenerateOption _myMetaCollectionType;
-
-        /// <summary>
-        /// The lower index defined in the constructor.
-        /// </summary>
-        private int _myLowerIndex;
+        private readonly Permutations<bool> _myPermutations;
     }
 }

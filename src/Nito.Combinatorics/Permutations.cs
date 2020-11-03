@@ -90,7 +90,7 @@ namespace Nito.Combinatorics
             // Input array:          {A A B C D E E}
             // Lexicographic Orders: {1 1 2 3 4 5 5}
 
-            _myMetaCollectionType = type;
+            Type = type;
             _myValues = values.ToList();
             _myLexicographicOrders = new int[_myValues.Count];
 
@@ -123,26 +123,16 @@ namespace Nito.Combinatorics
                 }
             }
 
-            _myCount = GetCount();
+            Count = GetCount();
         }
 
         /// <summary>
         /// Gets an enumerator for collecting the list of permutations.
         /// </summary>
         /// <returns>The enumerator.</returns>
-        public IEnumerator<IReadOnlyList<T>> GetEnumerator()
-        {
-            return new Enumerator(this);
-        }
+        public IEnumerator<IReadOnlyList<T>> GetEnumerator() => new Enumerator(this);
 
-        /// <summary>
-        /// Gets an enumerator for collecting the list of permutations.
-        /// </summary>
-        /// <returns>The enumerator.</returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return new Enumerator(this);
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         /// <summary>
         /// The enumerator that enumerates each meta-collection of the enclosing Permutations class.
@@ -208,20 +198,7 @@ namespace Nito.Combinatorics
                 return _myPosition != Position.AfterLast;
             }
 
-            /// <summary>
-            /// The current permutation.
-            /// </summary>
-            object IEnumerator.Current
-            {
-                get
-                {
-                    if (_myPosition == Position.InSet)
-                    {
-                        return new List<T>(_myValues);
-                    }
-                    throw new InvalidOperationException();
-                }
-            }
+            object IEnumerator.Current => Current;
 
             /// <summary>
             /// The current permutation.
@@ -238,9 +215,7 @@ namespace Nito.Combinatorics
                 }
             }
 
-            /// <summary>
-            /// Cleans up non-managed resources, of which there are none used here.
-            /// </summary>
+            /// <inheritdoc />
             public void Dispose()
             {
             }
@@ -346,25 +321,25 @@ namespace Nito.Combinatorics
 
         /// <summary>
         /// The count of all permutations that will be returned.
-        /// If type is MetaCollectionType.WithholdGeneratedSets, then this does not double count permutations with multiple identical values.  
-        /// I.e. count of permutations of "AAB" will be 3 instead of 6.  
-        /// If type is MetaCollectionType.WithRepetition, then this is all combinations and is therefore N!, where N is the number of values.
+        /// If <see cref="Type"/> is <see cref="GenerateOption.WithoutRepetition"/>, then this does not count equivalent result sets.  
+        /// I.e., count of permutations of "AAB" will be 3 instead of 6.  
+        /// If <see cref="Type"/> is <see cref="GenerateOption.WithRepetition"/>, then this is all combinations and is therefore N!, where N is the number of values in the input set.
         /// </summary>
-        public long Count => _myCount;
+        public long Count { get; }
 
         /// <summary>
-        /// The type of Permutations set that is generated.
+        /// The type of permutations set that is generated.
         /// </summary>
-        public GenerateOption Type => _myMetaCollectionType;
+        public GenerateOption Type { get; }
 
         /// <summary>
-        /// The upper index of the meta-collection, equal to the number of items in the initial set.
+        /// The upper index of the meta-collection, equal to the number of items in the input set.
         /// </summary>
         public int UpperIndex => _myValues.Count;
 
         /// <summary>
         /// The lower index of the meta-collection, equal to the number of items returned each iteration.
-        /// For Permutation, this is always equal to the UpperIndex.
+        /// This is always equal to <see cref="UpperIndex"/>.
         /// </summary>
         public int LowerIndex => _myValues.Count;
 
@@ -412,23 +387,13 @@ namespace Nito.Combinatorics
         /// <summary>
         /// A list of T that represents the order of elements as originally provided, used for Reset.
         /// </summary>
-        private List<T> _myValues;
+        private readonly List<T> _myValues;
 
         /// <summary>
         /// Parallel array of integers that represent the location of items in the myValues array.
         /// This is generated at Initialization and is used as a performance speed up rather that
         /// comparing T each time, much faster to let the CLR optimize around integers.
         /// </summary>
-        private int[] _myLexicographicOrders;
-
-        /// <summary>
-        /// The count of all permutations.  Calculated at Initialization and returned by Count property.
-        /// </summary>
-        private long _myCount;
-
-        /// <summary>
-        /// The type of Permutations that this was initialized from.
-        /// </summary>
-        private GenerateOption _myMetaCollectionType;
+        private readonly int[] _myLexicographicOrders;
     }
 }
