@@ -23,7 +23,7 @@ namespace UnitTests
         {
             var integers = new List<int> { 1, 2, 3 };
 
-            var p = new Permutations<int>(integers, GenerateOption.WithoutRepetition);
+            var p = new Permutations<int>(integers);
 
             foreach (var v in p)
             {
@@ -50,7 +50,7 @@ namespace UnitTests
         {
             var integers = new List<int> {1, 1, 2, 3};
 
-            var p = new Permutations<int>(integers, GenerateOption.WithRepetition);
+            var p = new Permutations<int>(integers, GenerateOptions.WithRepetition);
 
             foreach (var v in p)
             {
@@ -73,7 +73,7 @@ namespace UnitTests
         {
             var integers = new List<int> {1, 2, 3, 4, 5, 6};
 
-            var c = new Combinations<int>(integers, 3, GenerateOption.WithoutRepetition);
+            var c = new Combinations<int>(integers, 3);
 
             foreach (var v in c)
             {
@@ -94,7 +94,7 @@ namespace UnitTests
         {
             var integers = new List<int> { 1, 2, 3, 4, 5, 6 };
 
-            var c = new Combinations<int>(integers, 2, GenerateOption.WithRepetition);
+            var c = new Combinations<int>(integers, 2, GenerateOptions.WithRepetition);
 
             foreach (var v in c)
             {
@@ -123,7 +123,7 @@ namespace UnitTests
         {
             var integers = new List<int> {1, 2, 3, 4, 5, 6};
 
-            var v = new Variations<int>(integers, 3, GenerateOption.WithoutRepetition);
+            var v = new Variations<int>(integers, 3);
 
             foreach (var vv in v)
             {
@@ -148,7 +148,7 @@ namespace UnitTests
         {
             var integers = new List<int> { 1, 2, 3, 4, 5, 6 };
 
-            var v = new Variations<int>(integers, 3, GenerateOption.WithRepetition);
+            var v = new Variations<int>(integers, 3, GenerateOptions.WithRepetition);
 
             foreach (var vv in v)
             {
