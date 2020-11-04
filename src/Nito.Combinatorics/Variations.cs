@@ -83,17 +83,11 @@ namespace Nito.Combinatorics
             public EnumeratorWithRepetition(Variations<T> source)
             {
                 _myParent = source;
-                Reset();
-            }
-
-            /// <summary>
-            /// Resets the Variations enumerator to the first variation.  
-            /// </summary>
-            public void Reset()
-            {
                 _myCurrentList = null;
                 _myListIndexes = null;
             }
+
+            void IEnumerator.Reset() => throw new NotSupportedException();
 
             /// <summary>
             /// Advances to the next variation.
@@ -203,13 +197,7 @@ namespace Nito.Combinatorics
                 _myPermutationsEnumerator = (Permutations<int>.Enumerator)_myParent._myPermutations!.GetEnumerator();
             }
 
-            /// <summary>
-            /// Resets the Variations enumerator to the first variation.  
-            /// </summary>
-            public void Reset()
-            {
-                _myPermutationsEnumerator.Reset();
-            }
+            void IEnumerator.Reset() => throw new NotSupportedException();
 
             /// <summary>
             /// Advances to the next variation.
