@@ -39,7 +39,7 @@ namespace Nito.Combinatorics
         /// <param name="values">List of values to select combinations from.</param>
         /// <param name="lowerIndex">The size of each combination set to return.</param>
         public Combinations(IEnumerable<T> values, int lowerIndex)
-            : this(values, lowerIndex, GenerateOption.WithoutRepetition)
+            : this(values, lowerIndex, GenerateOptions.Default)
         {
         }
 
@@ -50,7 +50,7 @@ namespace Nito.Combinatorics
         /// <param name="values">List of values to select combinations from.</param>
         /// <param name="lowerIndex">The size of each combination set to return.</param>
         /// <param name="type">The type of Combinations set to generate.</param>
-        public Combinations(IEnumerable<T> values, int lowerIndex, GenerateOption type)
+        public Combinations(IEnumerable<T> values, int lowerIndex, GenerateOptions type)
         {
             _ = values ?? throw new ArgumentNullException(nameof(values));
 
@@ -74,7 +74,7 @@ namespace Nito.Combinatorics
             LowerIndex = lowerIndex;
             _myValues = values.ToList();
             List<bool> myMap;
-            if (type == GenerateOption.WithoutRepetition)
+            if ((type & GenerateOptions.WithRepetition) == 0)
             {
                 myMap = new List<bool>(_myValues.Count);
                 myMap.AddRange(_myValues.Select((t, i) => i < _myValues.Count - LowerIndex));
@@ -193,7 +193,7 @@ namespace Nito.Combinatorics
                     if (!p)
                     {
                         _myCurrentList.Add(_myParent._myValues[index]);
-                        if (_myParent.Type == GenerateOption.WithoutRepetition)
+                        if ((_myParent.Type & GenerateOptions.WithRepetition) == 0)
                             ++index;
                     }
                     else
@@ -229,7 +229,7 @@ namespace Nito.Combinatorics
         /// <summary>
         /// The type of Combinations set that is generated.
         /// </summary>
-        public GenerateOption Type { get; }
+        public GenerateOptions Type { get; }
 
         /// <summary>
         /// The upper index of the meta-collection, equal to the number of items in the initial set.

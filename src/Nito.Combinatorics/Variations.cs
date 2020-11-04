@@ -32,7 +32,7 @@ namespace Nito.Combinatorics
         /// <param name="values">List of values to select Variations from.</param>
         /// <param name="lowerIndex">The size of each variation set to return.</param>
         public Variations(IEnumerable<T> values, int lowerIndex)
-            : this(values, lowerIndex, GenerateOption.WithoutRepetition)
+            : this(values, lowerIndex, GenerateOptions.Default)
         {
         }
 
@@ -43,16 +43,14 @@ namespace Nito.Combinatorics
         /// <param name="values">List of values to select variations from.</param>
         /// <param name="lowerIndex">The size of each variation set to return.</param>
         /// <param name="type">Type indicates whether to use repetition in set generation.</param>
-        public Variations(IEnumerable<T> values, int lowerIndex, GenerateOption type)
+        public Variations(IEnumerable<T> values, int lowerIndex, GenerateOptions type)
         {
             Type = type;
             LowerIndex = lowerIndex;
             _myValues = values.ToList();
 
-            if (type != GenerateOption.WithoutRepetition)
-            {
+            if ((type & GenerateOptions.WithRepetition) != 0)
                 return;
-            }
 
             var myMap = new List<int>(_myValues.Count);
             var index = 0;
@@ -67,7 +65,7 @@ namespace Nito.Combinatorics
         /// </summary>
         /// <returns>The enumerator.</returns>
         public IEnumerator<IReadOnlyList<T>> GetEnumerator() =>
-            Type == GenerateOption.WithRepetition ?
+            (Type & GenerateOptions.WithRepetition) != 0 ?
                 (IEnumerator<IReadOnlyList<T>>) new EnumeratorWithRepetition(this) :
                 new EnumeratorWithoutRepetition(this);
 
@@ -277,10 +275,8 @@ namespace Nito.Combinatorics
                     if (position != int.MaxValue)
                     {
                         _myCurrentList[position] = _myParent._myValues[index];
-                        if (_myParent.Type == GenerateOption.WithoutRepetition)
-                        {
+                        if ((_myParent.Type & GenerateOptions.WithRepetition) == 0)
                             ++index;
-                        }
                     }
                     else
                     {
@@ -312,12 +308,12 @@ namespace Nito.Combinatorics
         /// Variations with repetitions does not behave like other meta-collections and it's
         /// count is equal to N^P, where N is the upper index and P is the lower index.
         /// </remarks>
-        public BigInteger Count => Type == GenerateOption.WithoutRepetition ? _myPermutations!.Count : BigInteger.Pow(UpperIndex, LowerIndex);
+        public BigInteger Count => (Type & GenerateOptions.WithRepetition) == 0 ? _myPermutations!.Count : BigInteger.Pow(UpperIndex, LowerIndex);
 
         /// <summary>
         /// The type of Variations set that is generated.
         /// </summary>
-        public GenerateOption Type { get; }
+        public GenerateOptions Type { get; }
 
         /// <summary>
         /// The upper index of the meta-collection, equal to the number of items in the initial set.
