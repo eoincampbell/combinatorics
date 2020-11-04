@@ -151,17 +151,10 @@ namespace Nito.Combinatorics
                 _myLexicographicalOrders = new int[source._myLexicographicOrders.Length];
                 _myValues = new List<T>(source._myValues.Count);
                 source._myLexicographicOrders.CopyTo(_myLexicographicalOrders, 0);
-                Reset();
-            }
-
-            /// <summary>
-            /// Resets the permutations enumerator to the first permutation.  
-            /// This will be the first lexicographically order permutation.
-            /// </summary>
-            public void Reset()
-            {
                 _myPosition = Position.BeforeFirst;
             }
+
+            void IEnumerator.Reset() => throw new NotSupportedException();
 
             /// <summary>
             /// Advances to the next permutation.
@@ -178,7 +171,6 @@ namespace Nito.Combinatorics
                 {
                     case Position.BeforeFirst:
                         _myValues.AddRange(_myParent._myValues);
-                        Array.Sort(_myLexicographicalOrders);
                         _myPosition = Position.InSet;
                         break;
                     case Position.InSet:
@@ -381,7 +373,7 @@ namespace Nito.Combinatorics
         }
 
         /// <summary>
-        /// A list of T that represents the order of elements as originally provided, used for Reset.
+        /// A list of T that represents the order of elements as originally provided.
         /// </summary>
         private readonly List<T> _myValues;
 

@@ -114,13 +114,7 @@ namespace Nito.Combinatorics
                 _myPermutationsEnumerator = (Permutations<bool>.Enumerator)_myParent._myPermutations.GetEnumerator();
             }
 
-            /// <summary>
-            /// Resets the combinations enumerator to the first combination.  
-            /// </summary>
-            public void Reset()
-            {
-                _myPermutationsEnumerator.Reset();
-            }
+            void IEnumerator.Reset() => throw new NotSupportedException();
 
             /// <summary>
             /// Advances to the next combination of items from the set.
