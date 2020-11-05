@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Nito.Combinatorics\Combinatorics.csproj" Aliases="localbuild" />
+    <ProjectReference Include="..\src\Combinatorics\Combinatorics.csproj" Aliases="localbuild" />
   </ItemGroup>
 
 </Project>
