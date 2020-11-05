@@ -6,6 +6,8 @@
     <PackageLicenseExpression>CPOL-1.02</PackageLicenseExpression>
     <PackageTags>combinatorics;permutation;combination;variation</PackageTags>
     <Description>A combinatorics library providing combinations, permutations &amp; variations. This nuget package wraps up Adrian Akison's original implementation. See: http://www.codeproject.com/Articles/26050/Permutations-Combinations-and-Variations-using-C-G</Description>
+    <RootNamespace>Combinatorics.Collections</RootNamespace>
+    <AssemblyName Condition="'$(CI)'!='true'">local.Combinatorics.dll</AssemblyName>
   </PropertyGroup>
 
 </Project>

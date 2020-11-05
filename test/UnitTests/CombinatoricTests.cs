@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Nito.Combinatorics;
+using Combinatorics.Collections;
 using Xunit;
 
 namespace UnitTests

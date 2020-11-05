@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Nito.Combinatorics\Nito.Combinatorics.csproj" />
+    <ProjectReference Include="..\..\src\Nito.Combinatorics\Combinatorics.csproj" />
   </ItemGroup>
 
 </Project>

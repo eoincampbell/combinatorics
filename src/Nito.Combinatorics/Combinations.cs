@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 
-namespace Nito.Combinatorics
+namespace Combinatorics.Collections
 {
     /// <summary>
     /// Combinations defines a sequence of all possible subsets of a particular size from the set of values.

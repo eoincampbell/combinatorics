@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 
-namespace Nito.Combinatorics
+namespace Combinatorics.Collections
 {
     /// <summary>
     /// Permutations defines a sequence of all possible orderings of a set of values.

@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30517.126
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nito.Combinatorics", "src\Nito.Combinatorics\Nito.Combinatorics.csproj", "{BC11DF67-0456-4A41-BA75-DAC48468A075}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Combinatorics", "src\Nito.Combinatorics\Combinatorics.csproj", "{BC11DF67-0456-4A41-BA75-DAC48468A075}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "test\UnitTests\UnitTests.csproj", "{243B4F2A-E25A-4151-8AB2-5E89341B8E2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Benchmarks", "Benchmarks\Benchmarks.csproj", "{EC12A7CF-26B8-4D08-A0A8-8527B78D8A65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Benchmarks", "Benchmarks\Benchmarks.csproj", "{EC12A7CF-26B8-4D08-A0A8-8527B78D8A65}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
