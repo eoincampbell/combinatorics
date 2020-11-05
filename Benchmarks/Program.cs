@@ -8,7 +8,7 @@ using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Diagnosers;
 using BenchmarkDotNet.Order;
 using BenchmarkDotNet.Running;
-using LocalCombinatorics = localbuild::Nito.Combinatorics;
+using LocalCombinatorics = localbuild::Combinatorics.Collections;
 
 namespace Benchmarks
 {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 
-namespace Nito.Combinatorics
+namespace Combinatorics.Collections
 {
     /// <summary>
     /// Utility class that maintains a small table of prime numbers and provides

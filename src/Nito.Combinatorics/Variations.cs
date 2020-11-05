@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 
-namespace Nito.Combinatorics
+namespace Combinatorics.Collections
 {
     /// <summary>
     /// Variations defines a sequence of all possible ordered subsets of a particular size from the set of values.  

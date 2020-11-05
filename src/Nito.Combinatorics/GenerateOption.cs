@@ -1,4 +1,4 @@
-namespace Nito.Combinatorics
+namespace Combinatorics.Collections
 {
     /// <summary>
     /// Indicates whether a permutation, combination or variation generates equivalent result sets.  
