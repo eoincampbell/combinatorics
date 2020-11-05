@@ -8,6 +8,7 @@ using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Diagnosers;
 using BenchmarkDotNet.Order;
 using BenchmarkDotNet.Running;
+using NugetCombinatorics = Combinatorics.Collections;
 using LocalCombinatorics = localbuild::Combinatorics.Collections;
 
 namespace Benchmarks
@@ -31,7 +32,7 @@ namespace Benchmarks
         [BenchmarkCategory("Enumerate"), Benchmark(Baseline = true)]
         public void EnumerateOld()
         {
-            var permutations = new Combinatorics.Collections.Permutations<int>(_source);
+            var permutations = new NugetCombinatorics.Permutations<int>(_source);
             foreach (var p in permutations)
                 ;
         }
@@ -47,7 +48,7 @@ namespace Benchmarks
         [BenchmarkCategory("Count0"), Benchmark(Baseline = true)]
         public void Count0Old()
         {
-            var permutations = new Combinatorics.Collections.Permutations<int>(_source);
+            var permutations = new NugetCombinatorics.Permutations<int>(_source);
             if (permutations.Count != 362880)
                 throw new InvalidOperationException($"Expected 362880 but got {permutations.Count}.");
         }
@@ -63,7 +64,7 @@ namespace Benchmarks
         [BenchmarkCategory("Count1"), Benchmark(Baseline = true)]
         public void Count1Old()
         {
-            var permutations = new Combinatorics.Collections.Permutations<int>(_largeSource);
+            var permutations = new NugetCombinatorics.Permutations<int>(_largeSource);
             if (permutations.Count != 121645100408832000)
                 throw new InvalidOperationException($"Expected 121645100408832000 but got {permutations.Count}.");
         }
@@ -79,7 +80,7 @@ namespace Benchmarks
         [BenchmarkCategory("Count2"), Benchmark(Baseline = true)]
         public void Count2Old()
         {
-            var permutations = new Combinatorics.Collections.Permutations<int>(_veryLargeSource);
+            var permutations = new NugetCombinatorics.Permutations<int>(_veryLargeSource);
             if (permutations.Count != _veryLargeSourceCount)
                 throw new InvalidOperationException($"Expected 51090942171709440000 but got {permutations.Count}.");
         }
