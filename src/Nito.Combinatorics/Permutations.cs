@@ -34,7 +34,7 @@ namespace Nito.Combinatorics
         /// </summary>
         /// <param name="values">List of values to permute.</param>
         public Permutations(IEnumerable<T> values)
-            : this(values, GenerateOptions.Default, null)
+            : this(values, GenerateOption.WithoutRepetition, null)
         {
         }
 
@@ -45,7 +45,7 @@ namespace Nito.Combinatorics
         /// </summary>
         /// <param name="values">List of values to permute.</param>
         /// <param name="type">The type of permutation set to calculate.</param>
-        public Permutations(IEnumerable<T> values, GenerateOptions type)
+        public Permutations(IEnumerable<T> values, GenerateOption type)
             : this(values, type, null)
         {
         }
@@ -58,7 +58,7 @@ namespace Nito.Combinatorics
         /// <param name="values">List of values to permute.</param>
         /// <param name="comparer">Comparer used for defining the lexicographic order.</param>
         public Permutations(IEnumerable<T> values, IComparer<T>? comparer)
-            : this(values, GenerateOptions.Default, comparer)
+            : this(values, GenerateOption.WithoutRepetition, comparer)
         {
         }
 
@@ -69,7 +69,7 @@ namespace Nito.Combinatorics
         /// <param name="values">List of values to permute.</param>
         /// <param name="type">The type of permutation set to calculate.</param>
         /// <param name="comparer">Comparer used for defining the lexicographic order.</param>
-        public Permutations(IEnumerable<T> values, GenerateOptions type, IComparer<T>? comparer)
+        public Permutations(IEnumerable<T> values, GenerateOption type, IComparer<T>? comparer)
         {
             _ = values ?? throw new ArgumentNullException(nameof(values));
 
@@ -95,7 +95,7 @@ namespace Nito.Combinatorics
             _myValues = values.ToList();
             _myLexicographicOrders = new int[_myValues.Count];
 
-            if ((type & GenerateOptions.WithRepetition) != 0)
+            if (type == GenerateOption.WithRepetition)
             {
                 for (var i = 0; i < _myLexicographicOrders.Length; ++i)
                 {
@@ -200,9 +200,10 @@ namespace Nito.Combinatorics
             {
                 get
                 {
-                    if (_myPosition != Position.InSet)
-                        throw new InvalidOperationException();
-                    return (_myParent.Type & GenerateOptions.MutateInPlace) != 0 ? _myValues : new List<T>(_myValues);
+                    if (_myPosition == Position.InSet)
+                        return new List<T>(_myValues);
+
+                    throw new InvalidOperationException();
                 }
             }
 
@@ -312,16 +313,16 @@ namespace Nito.Combinatorics
 
         /// <summary>
         /// The count of all permutations that will be returned.
-        /// If <see cref="Type"/> does not include the <see cref="GenerateOptions.WithRepetition"/> flag, then this does not count equivalent result sets.  
+        /// If <see cref="Type"/> is <see cref="GenerateOption.WithoutRepetition"/>, then this does not count equivalent result sets.  
         /// I.e., count of permutations of "AAB" will be 3 instead of 6.  
-        /// If <see cref="Type"/> includes the <see cref="GenerateOptions.WithRepetition"/>, then this is all combinations and is therefore N!, where N is the number of values in the input set.
+        /// If <see cref="Type"/> is <see cref="GenerateOption.WithRepetition"/>, then this is all combinations and is therefore N!, where N is the number of values in the input set.
         /// </summary>
         public BigInteger Count { get; }
 
         /// <summary>
         /// The type of permutations set that is generated.
         /// </summary>
-        public GenerateOptions Type { get; }
+        public GenerateOption Type { get; }
 
         /// <summary>
         /// The upper index of the meta-collection, equal to the number of items in the input set.
