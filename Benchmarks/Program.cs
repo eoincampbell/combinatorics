@@ -7,7 +7,6 @@ using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Diagnosers;
 using BenchmarkDotNet.Order;
 using BenchmarkDotNet.Running;
-using Nito.Combinatorics;
 
 namespace Benchmarks
 {
@@ -39,14 +38,6 @@ namespace Benchmarks
         public void EnumerateNew()
         {
             var permutations = new Nito.Combinatorics.Permutations<int>(_source);
-            foreach (var p in permutations)
-                ;
-        }
-
-        [BenchmarkCategory("Enumerate"), Benchmark]
-        public void EnumerateNewMutate()
-        {
-            var permutations = new Nito.Combinatorics.Permutations<int>(_source, GenerateOptions.MutateInPlace);
             foreach (var p in permutations)
                 ;
         }
@@ -110,9 +101,6 @@ namespace Benchmarks
                     .AddDiagnoser(MemoryDiagnoser.Default)
                     .WithOrderer(new DefaultOrderer(SummaryOrderPolicy.Method))
                     .AddLogicalGroupRules(BenchmarkLogicalGroupRule.ByCategory)
-//                    .AddJob(Job.Default.WithId("net48").WithRuntime(ClrRuntime.Net48))
-//                    .AddJob(Job.Default.WithId("core31").WithRuntime(CoreRuntime.Core31))
-//                    .AddJob(Job.Default.WithId("core50").WithRuntime(CoreRuntime.Core50))
                 );
         }
     }
