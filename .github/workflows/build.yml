@@ -57,10 +57,9 @@ jobs:
 
     - name: Build
       run: |
-        dotnet build ~/src/Combinatorics/Combinatorics.csproj --configuration Release
-        dotnet build ~/test/UnitTests/UnitTests.csproj --configuration Release
+        dotnet build --configuration Release
         dotnet test --configuration Release --no-build --collect:"XPlat Code Coverage"
-        dotnet pack ~/src/Combinatorics/Combinatorics.csproj --configuration Release --no-build
+        dotnet pack --configuration Release --no-build
 
     - name: Upload package artifacts
       uses: actions/upload-artifact@v2
