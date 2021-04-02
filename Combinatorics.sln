@@ -9,6 +9,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Benchmarks", "Benchmarks\Be
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Combinatorics", "src\Combinatorics\Combinatorics.csproj", "{0A6FE84B-697A-4C83-9083-D9A94F2A63BE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_misc", "_misc", "{2C6D5001-6B68-4061-9376-1415D2CBADC2}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		LICENCE = LICENCE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{6CC8DF54-815B-4B4A-A590-8834AD530683}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build.yml = .github\workflows\build.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +70,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6CC8DF54-815B-4B4A-A590-8834AD530683} = {2C6D5001-6B68-4061-9376-1415D2CBADC2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {ADE7A58C-3553-4BAC-8014-60C27B0617FF}
