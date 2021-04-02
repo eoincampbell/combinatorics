@@ -19,7 +19,7 @@ namespace UnitTests
         /// shuffle a deck of cards is 52! or approximately 8.1E67.
         /// </summary>
         [Fact]
-        public void Generate_Permutations_Without_Repetition_On_3_Unique_Input_Items_Should_Create_12_Output_Permutations()
+        public void Generate_Permutations_Without_Repetition_On_3_Unique_Input_Items_Should_Create_6_Output_Permutations()
         {
             var integers = new List<int> { 1, 2, 3 };
 
