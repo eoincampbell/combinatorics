@@ -92,8 +92,8 @@ namespace Combinatorics.Collections
             // Lexicographic Orders: {1 1 2 3 4 5 5}
 
             Type = type;
-            _myValues = values.ToList();
-            _myLexicographicOrders = new int[_myValues.Count];
+            _myValues = values is T[] array ? array : values.ToArray();
+            _myLexicographicOrders = new int[_myValues.Length];
 
             if (type == GenerateOption.WithRepetition)
             {
@@ -106,7 +106,8 @@ namespace Combinatorics.Collections
             {
                 comparer ??= Comparer<T>.Default;
 
-                _myValues.Sort(comparer);
+                Array.Sort(_myValues, comparer);
+
                 var j = 1;
                 if (_myLexicographicOrders.Length > 0)
                 {
@@ -149,7 +150,7 @@ namespace Combinatorics.Collections
                 _ = source ?? throw new ArgumentNullException(nameof(source));
                 _myParent = source;
                 _myLexicographicalOrders = new int[source._myLexicographicOrders.Length];
-                _myValues = new List<T>(source._myValues.Count);
+                _myValues = new List<T>(source._myValues.Length);
                 source._myLexicographicOrders.CopyTo(_myLexicographicalOrders, 0);
                 _myPosition = Position.BeforeFirst;
             }
@@ -327,13 +328,13 @@ namespace Combinatorics.Collections
         /// <summary>
         /// The upper index of the meta-collection, equal to the number of items in the input set.
         /// </summary>
-        public int UpperIndex => _myValues.Count;
+        public int UpperIndex => _myValues.Length;
 
         /// <summary>
         /// The lower index of the meta-collection, equal to the number of items returned each iteration.
         /// This is always equal to <see cref="UpperIndex"/>.
         /// </summary>
-        public int LowerIndex => _myValues.Count;
+        public int LowerIndex => _myValues.Length;
 
         /// <summary>
         /// Calculates the total number of permutations that will be returned.  
@@ -376,7 +377,7 @@ namespace Combinatorics.Collections
         /// <summary>
         /// A list of T that represents the order of elements as originally provided.
         /// </summary>
-        private readonly List<T> _myValues;
+        private readonly T[] _myValues;
 
         /// <summary>
         /// Parallel array of integers that represent the location of items in the myValues array.

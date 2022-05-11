@@ -72,12 +72,12 @@ namespace Combinatorics.Collections
 
             Type = type;
             LowerIndex = lowerIndex;
-            _myValues = values.ToList();
+            _myValues = values is IList<T> list ? list : values.ToArray();
             List<bool> myMap;
             if (type == GenerateOption.WithoutRepetition)
             {
                 myMap = new List<bool>(_myValues.Count);
-                myMap.AddRange(_myValues.Select((t, i) => i < _myValues.Count - LowerIndex));
+                myMap.AddRange(_myValues.Select((_, i) => i < _myValues.Count - LowerIndex));
             }
             else
             {
@@ -238,7 +238,7 @@ namespace Combinatorics.Collections
         /// <summary>
         /// Copy of values object is initialized with, required for enumerator reset.
         /// </summary>
-        private readonly List<T> _myValues;
+        private readonly IList<T> _myValues;
 
         /// <summary>
         /// Permutations object that handles permutations on booleans for combination inclusion.

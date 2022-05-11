@@ -47,7 +47,7 @@ namespace Combinatorics.Collections
         {
             Type = type;
             LowerIndex = lowerIndex;
-            _myValues = values.ToList();
+            _myValues = values is List<T> list ? list : values.ToList();
 
             if (type != GenerateOption.WithoutRepetition)
             {
